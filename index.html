@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>amenitiz — career compass — customer success</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue:#507FE6; --blue-dark:#2D58B8; --blue-darker:#1A3A8A; --blue-light:#7BA3EF;
+  --blue-pale:#D6E4FB; --blue-bg:#EEF4FF;
+  --gold:#C9A96E; --gold-dark:#8B6F3F; --gold-light:#E8D5B0; --gold-bg:#FFF8ED;
+  --white:#FFFFFF; --gray-50:#F7F9FE; --gray-100:#EBF0FA; --gray-200:#CFDAF5;
+  --gray-400:#8FA6D4; --gray-600:#4A6199; --gray-900:#0D1F4A;
+  --font:'DM Sans',sans-serif; --radius:16px; --radius-sm:10px;
+}
+body { font-family:var(--font); background:var(--gray-50); color:var(--gray-900); min-height:100vh; line-height:1.6; }
+
+/* GATE */
+#gate { position:fixed; inset:0; z-index:1000; background:var(--blue-darker); display:flex; align-items:center; justify-content:center; padding:24px; }
+#gate.hidden { display:none; }
+.gate-bg { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.gate-blob { position:absolute; border-radius:50%; background:rgba(255,255,255,0.04); }
+.gb1 { width:400px; height:320px; top:-80px; left:-60px; border-radius:60% 40% 70% 30%; }
+.gb2 { width:280px; height:220px; bottom:-40px; right:-40px; border-radius:40% 60% 30% 70%; }
+.gb3 { width:160px; height:160px; top:40%; left:60%; border-radius:50%; background:rgba(201,169,110,0.06); }
+.gate-deco-tl { position:absolute; top:32px; left:32px; opacity:0.25; }
+.gate-deco-br { position:absolute; bottom:32px; right:32px; opacity:0.2; }
+.gate-card { position:relative; z-index:1; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:20px; padding:40px 36px 36px; width:100%; max-width:400px; backdrop-filter:blur(12px); animation:gateIn .4s cubic-bezier(.22,1,.36,1) both; }
+@keyframes gateIn { from { opacity:0; transform:translateY(16px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+.gate-logo { font-size:18px; font-weight:300; color:var(--white); letter-spacing:-.01em; margin-bottom:4px; }
+.gate-title { font-size:22px; font-weight:500; color:var(--white); margin-bottom:6px; line-height:1.2; }
+.gate-sub { font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:28px; line-height:1.5; }
+.gate-field { margin-bottom:14px; }
+.gate-label { display:block; font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.07em; color:rgba(255,255,255,0.5); margin-bottom:6px; }
+.gate-input { width:100%; padding:11px 14px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:10px; font-family:var(--font); font-size:14px; color:var(--white); outline:none; transition:border-color .15s,background .15s; }
+.gate-input::placeholder { color:rgba(255,255,255,0.3); }
+.gate-input:focus { border-color:rgba(255,255,255,0.4); background:rgba(255,255,255,0.12); }
+.gate-input.error { border-color:#F08080; }
+.gate-error { font-size:12px; color:#F08080; margin-top:8px; min-height:18px; display:flex; align-items:center; gap:5px; }
+.gate-error::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:#F08080; flex-shrink:0; }
+.gate-error:empty { display:none; } .gate-error:empty::before { display:none; }
+.gate-btn { width:100%; margin-top:20px; padding:13px; background:var(--blue); border:none; border-radius:10px; font-family:var(--font); font-size:14px; font-weight:500; color:var(--white); cursor:pointer; transition:background .15s,transform .1s; letter-spacing:.01em; }
+.gate-btn:hover { background:var(--blue-dark); } .gate-btn:active { transform:scale(.99); }
+.gate-hint { margin-top:16px; text-align:center; font-size:11.5px; color:rgba(255,255,255,0.3); line-height:1.5; }
+
+/* APP */
+#app { display:none; } #app.visible { display:block; }
+header { background:var(--blue); padding:0; position:relative; overflow:hidden; min-height:72px; display:flex; align-items:center; }
+.header-bg { position:absolute; inset:0; pointer-events:none; }
+.blob { position:absolute; border-radius:50%; background:rgba(255,255,255,0.08); }
+.blob-1 { width:180px; height:140px; top:-40px; left:60px; border-radius:60% 40% 70% 30%; }
+.blob-2 { width:120px; height:100px; top:10px; right:200px; border-radius:40% 60% 30% 70%; }
+.blob-3 { width:80px; height:80px; bottom:-20px; right:80px; border-radius:50%; }
+.deco-svg { position:absolute; right:24px; top:50%; transform:translateY(-50%); opacity:0.5; }
+.header-inner { position:relative; z-index:1; padding:16px 40px; display:flex; align-items:center; justify-content:space-between; width:100%; }
+.logo { font-size:20px; font-weight:300; color:var(--white); letter-spacing:-.01em; }
+.header-right { display:flex; align-items:center; gap:16px; }
+.header-tag { font-size:12px; font-weight:400; color:rgba(255,255,255,0.7); letter-spacing:.02em; }
+.logout-btn { font-size:11.5px; font-weight:400; color:rgba(255,255,255,0.5); background:none; border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:4px 12px; cursor:pointer; font-family:var(--font); transition:all .15s; letter-spacing:.01em; }
+.logout-btn:hover { color:var(--white); border-color:rgba(255,255,255,0.5); }
+
+.container { max-width:1100px; margin:0 auto; padding:28px 24px 60px; }
+
+/* PATH SELECTOR */
+.selector-intro { text-align:center; margin-bottom:18px; }
+.selector-title { font-size:22px; font-weight:500; color:var(--gray-900); margin-bottom:8px; letter-spacing:-.015em; }
+.selector-sub { font-size:12.5px; color:var(--gray-600); max-width:680px; margin:0 auto; line-height:1.55; }
+.paths-container { display:grid; grid-template-columns:minmax(0,1fr) minmax(240px,0.42fr); gap:16px; align-items:start; margin-bottom:22px; }
+.path-section { min-width:0; border-radius:14px; padding:14px 14px 16px; border:1.5px solid; }
+.path-section-ic { background:linear-gradient(180deg,var(--blue-bg) 0%,var(--white) 80%); border-color:var(--blue-pale); }
+.path-section-mg { background:linear-gradient(180deg,var(--gold-bg) 0%,var(--white) 80%); border-color:var(--gold-light); }
+.path-head { margin-bottom:12px; padding-bottom:10px; border-bottom:1px dashed; display:flex; align-items:baseline; gap:10px; }
+.path-section-ic .path-head { border-bottom-color:var(--blue-pale); }
+.path-section-mg .path-head { border-bottom-color:var(--gold-light); }
+.path-head-icon { font-size:16px; line-height:1; flex-shrink:0; }
+.path-head-text { flex:1; min-width:0; }
+.path-head-title { font-size:13px; font-weight:600; letter-spacing:.02em; line-height:1.2; }
+.path-section-ic .path-head-title { color:var(--blue-darker); }
+.path-section-mg .path-head-title { color:var(--gold-dark); }
+.path-head-sub { font-size:11.5px; font-weight:400; color:var(--gray-600); margin-top:3px; line-height:1.4; }
+.ic-grid-wrap { overflow-x:auto; padding-bottom:4px; }
+.ic-grid { display:grid; grid-template-columns:48px repeat(var(--ic-cols, 4),minmax(118px,1fr)); gap:6px; min-width:380px; }
+.track-header { font-size:9.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:var(--gray-400); text-align:center; padding:4px 4px 8px; }
+.mg-ladder { display:grid; grid-template-columns:48px 1fr; gap:6px; }
+.org-cell-row { display:flex; gap:6px; }
+.org-cell-row .org-cell { flex:1; }
+
+.level-label { font-size:11px; font-weight:600; color:var(--gray-400); text-align:center; align-self:center; letter-spacing:.04em; user-select:none; cursor:pointer; padding:8px 4px; border-radius:8px; transition:all .15s; background:var(--white); border:1.5px solid var(--gray-200); position:relative; }
+.level-label:hover { background:var(--blue-bg); border-color:var(--blue-light); color:var(--blue); }
+.level-label.mg-label:hover { background:var(--gold-bg); border-color:var(--gold); color:var(--gold-dark); }
+.level-label.active-level { background:var(--blue); color:var(--white); border-color:var(--blue); box-shadow:0 2px 6px rgba(80,127,230,0.3); }
+.level-label.mg-label.active-level { background:var(--gold); color:var(--white); border-color:var(--gold); box-shadow:0 2px 6px rgba(201,169,110,0.35); }
+
+.org-cell { background:var(--white); border:1.5px solid var(--gray-200); border-radius:10px; padding:9px 10px; font-size:12px; font-family:var(--font); font-weight:400; color:var(--gray-600); cursor:pointer; transition:all .15s; text-align:center; line-height:1.3; display:flex; align-items:center; justify-content:center; min-height:42px; }
+.org-cell:hover { border-color:var(--blue-light); color:var(--blue); background:var(--blue-bg); }
+.org-cell.active { border-color:var(--blue); background:var(--blue); color:var(--white); font-weight:500; box-shadow:0 2px 8px rgba(80,127,230,0.25); }
+.org-cell-mg { border-color:var(--gold-light); }
+.org-cell-mg:hover { border-color:var(--gold); color:var(--gold-dark); background:var(--gold-bg); }
+.org-cell-mg.active { border-color:var(--gold); background:var(--gold); color:var(--white); box-shadow:0 2px 8px rgba(201,169,110,0.3); }
+.org-empty { border:1px dashed rgba(207,218,245,0.5); border-radius:10px; background:transparent; min-height:42px; }
+
+/* SECTION HEADERS (between major blocks) */
+.sec-divider { display:flex; align-items:center; gap:10px; margin:0 0 10px; flex-wrap:wrap; }
+.sec-pill { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; padding:3px 10px; border-radius:12px; }
+.sec-pill-blue { color:var(--blue-darker); background:var(--blue-bg); border:1px solid var(--blue-pale); }
+.sec-pill-gold { color:var(--gold-dark); background:var(--gold-bg); border:1px solid var(--gold-light); }
+.sec-hint { font-size:11.5px; color:var(--gray-600); font-style:italic; flex:1; min-width:200px; }
+
+/* COLLAPSIBLE PANEL */
+.panel { background:var(--white); border:1px solid var(--gray-100); border-radius:var(--radius); margin-bottom:18px; overflow:hidden; transition:border-color .2s; }
+.panel.is-mg { border-color:var(--gold-light); }
+.panel-header { display:flex; align-items:center; gap:12px; padding:13px 16px; cursor:pointer; background:var(--blue-bg); transition:background .15s; user-select:none; }
+.panel.is-mg .panel-header { background:var(--gold-bg); }
+.panel-header:hover { background:var(--blue-pale); }
+.panel.is-mg .panel-header:hover { background:var(--gold-light); }
+.panel-icon { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--blue-dark); background:var(--white); padding:3px 9px; border-radius:12px; border:1px solid var(--blue-pale); flex-shrink:0; }
+.panel.is-mg .panel-icon { color:var(--gold-dark); border-color:var(--gold); }
+.panel-title { flex:1; font-size:13.5px; font-weight:500; color:var(--blue-darker); }
+.panel.is-mg .panel-title { color:var(--gold-dark); }
+.panel-title-strong { font-weight:600; }
+.panel-hint { font-size:11px; color:var(--gray-600); font-style:italic; margin-right:4px; }
+.panel-chevron { width:22px; height:22px; display:flex; align-items:center; justify-content:center; transition:transform .25s cubic-bezier(.4,0,.2,1); color:var(--blue-dark); flex-shrink:0; }
+.panel.is-mg .panel-chevron { color:var(--gold-dark); }
+.panel.is-open .panel-chevron { transform:rotate(180deg); }
+.panel-body { max-height:0; overflow:hidden; transition:max-height .35s cubic-bezier(.4,0,.2,1); }
+.panel.is-open .panel-body { max-height:3000px; }
+.panel-inner { padding:16px 18px 18px; }
+
+/* TABS (inside Competencies panel) */
+.cmp-tabs { display:flex; gap:4px; border-bottom:1.5px solid var(--gray-100); margin-bottom:16px; flex-wrap:wrap; }
+.cmp-tab { font-family:var(--font); font-size:12.5px; font-weight:500; color:var(--gray-600); background:transparent; border:none; padding:10px 16px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1.5px; transition:color .15s,border-color .15s; letter-spacing:.01em; display:flex; align-items:center; gap:6px; }
+.cmp-tab:hover { color:var(--blue-dark); }
+.panel.is-mg .cmp-tab:hover { color:var(--gold-dark); }
+.cmp-tab.active { color:var(--blue-dark); border-bottom-color:var(--blue); font-weight:600; background:var(--blue-bg); }
+.panel.is-mg .cmp-tab.active { color:var(--gold-dark); border-bottom-color:var(--gold); background:var(--gold-bg); }
+.cmp-tab-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.dot-core { background:#2E7D5C; } .dot-persona { background:#6B3FA0; }
+.cmp-content { display:none; }
+.cmp-content.active { display:block; animation:fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+
+/* LEVEL DEFINITION CONTENT */
+.ld-mantra { font-style:italic; font-size:13.5px; color:var(--gray-600); padding:11px 14px; background:var(--blue-bg); border-left:3px solid var(--blue); border-radius:4px; margin-bottom:14px; line-height:1.55; }
+.panel.is-mg .ld-mantra { background:var(--gold-bg); border-left-color:var(--gold); }
+.ld-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.ld-grid.cols-2 { grid-template-columns:repeat(2,1fr); }
+.ld-dim { background:var(--gray-50); border-radius:var(--radius-sm); padding:11px 13px; border:1px solid var(--gray-100); }
+.ld-dim-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--blue); margin-bottom:5px; }
+.panel.is-mg .ld-dim-label { color:var(--gold-dark); }
+.ld-dim-text { font-size:12px; color:var(--gray-600); line-height:1.55; }
+
+/* COMPETENCIES CARDS */
+.cmp-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.cmp-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.cmp-card { background:var(--gray-50); border-radius:var(--radius-sm); padding:12px 14px; border:1px solid var(--gray-100); border-left:3px solid #2E7D5C; }
+.cmp-card.persona { border-left-color:#6B3FA0; }
+.cmp-card-label { font-size:11.5px; font-weight:600; color:#2E7D5C; margin-bottom:7px; line-height:1.3; }
+.cmp-card.persona .cmp-card-label { color:#6B3FA0; }
+.cmp-bullets { margin:0; padding-left:16px; list-style:disc; }
+.cmp-bullets li { font-size:11.5px; color:var(--gray-600); line-height:1.55; margin-bottom:4px; }
+.cmp-bullets li:last-child { margin-bottom:0; }
+
+/* JOURNEY */
+.journey-card { background:var(--blue); border-radius:var(--radius); padding:20px 24px 18px; margin-bottom:16px; position:relative; overflow:hidden; }
+.journey-card .blob { background:rgba(255,255,255,0.06); }
+.journey-card .jb1 { width:160px; height:120px; top:-30px; right:40px; border-radius:50% 40% 60% 50%; }
+.journey-card .jb2 { width:80px; height:80px; bottom:-20px; left:20px; border-radius:40% 60% 50% 60%; }
+.journey-deco { position:absolute; right:20px; bottom:10px; opacity:0.3; }
+.journey-label { font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,0.6); margin-bottom:14px; position:relative; z-index:1; }
+.journey { display:flex; align-items:center; gap:0; overflow-x:auto; padding-bottom:2px; position:relative; z-index:1; }
+.jstep { display:flex; flex-direction:column; align-items:center; flex-shrink:0; cursor:pointer; transition:transform .15s; }
+.jstep:hover { transform:translateY(-2px); } .jstep:hover .jcircle { box-shadow:0 4px 12px rgba(0,0,0,0.18); }
+.jcircle { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:500; flex-shrink:0; transition:box-shadow .15s; }
+.j-past { background:rgba(255,255,255,0.15); color:rgba(255,255,255,0.5); border:1.5px solid rgba(255,255,255,0.2); }
+.j-current { background:var(--white); color:var(--blue); border:2px solid var(--white); font-weight:600; }
+.j-next { background:rgba(255,255,255,0.25); color:var(--white); border:2px solid rgba(255,255,255,0.5); }
+.j-future { background:transparent; color:rgba(255,255,255,0.35); border:1.5px dashed rgba(255,255,255,0.2); }
+.jcircle.j-mg { background:var(--gold-light); color:var(--gold-dark); border-color:var(--gold-light); }
+.jcircle.j-mg.j-current { background:var(--white); color:var(--gold-dark); border:2px solid var(--white); }
+.jcircle.j-mg.j-next { background:rgba(255,255,255,0.4); color:var(--gold-dark); border:2px solid rgba(255,255,255,0.6); }
+.jcircle.j-mg.j-future { background:transparent; color:rgba(255,255,255,0.5); border:1.5px dashed rgba(255,255,255,0.35); }
+.jlabel { font-size:10px; color:rgba(255,255,255,0.5); text-align:center; margin-top:6px; max-width:80px; line-height:1.3; }
+.jlabel.current { color:var(--white); font-weight:500; } .jlabel.next { color:rgba(255,255,255,0.75); }
+.jlabel.j-mg-label { color:rgba(255,255,255,0.55); } .jlabel.j-mg-label.current { color:var(--white); }
+.jarrow { width:24px; height:2px; background:rgba(255,255,255,0.2); flex-shrink:0; position:relative; margin-bottom:20px; }
+.jarrow::after { content:''; position:absolute; right:-5px; top:-4px; border-left:8px solid rgba(255,255,255,0.2); border-top:5px solid transparent; border-bottom:5px solid transparent; }
+.jarrow.active { background:rgba(255,255,255,0.5); } .jarrow.active::after { border-left-color:rgba(255,255,255,0.5); }
+.jarrow.j-optional { background:transparent; border-top:1.5px dashed rgba(255,255,255,0.45); height:0; margin-top:calc(-1.5px / 2); }
+.jarrow.j-optional::after { border-left-color:rgba(255,255,255,0.45); }
+.joptional-label { position:absolute; top:-16px; left:50%; transform:translateX(-50%); font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,0.55); white-space:nowrap; background:var(--blue); padding:2px 6px; border-radius:6px; border:1px solid rgba(255,255,255,0.2); }
+.jarrow-wrap { position:relative; display:flex; align-items:center; justify-content:center; }
+.laterals { margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.15); display:flex; flex-wrap:wrap; align-items:center; gap:8px; position:relative; z-index:1; }
+.laterals-label { font-size:10.5px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; color:rgba(255,255,255,0.55); margin-right:4px; }
+.lateral-pill { font-size:11.5px; font-weight:400; color:var(--white); background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); padding:4px 10px; border-radius:14px; cursor:pointer; transition:background .15s,border-color .15s; font-family:var(--font); }
+.lateral-pill:hover { background:rgba(255,255,255,0.25); border-color:rgba(255,255,255,0.5); }
+.laterals-empty { font-size:11.5px; color:rgba(255,255,255,0.4); font-style:italic; }
+.laterals-note-label { font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em; color:rgba(255,255,255,0.85); background:rgba(255,255,255,0.08); padding:3px 8px; border-radius:6px; margin-right:4px; }
+.laterals-note { font-size:11.5px; color:rgba(255,255,255,0.7); font-style:italic; margin-right:4px; line-height:1.5; }
+
+/* ROLE SUMMARY */
+.role-summary { background:var(--white); border:1px solid var(--gray-100); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:18px; font-size:13.5px; color:var(--gray-600); line-height:1.6; border-left:3px solid var(--blue); }
+.role-summary strong { color:var(--blue-dark); font-weight:500; display:block; margin-bottom:3px; }
+.role-summary.is-mg { border-left-color:var(--gold); }
+.role-summary.is-mg strong { color:var(--gold-dark); }
+
+/* ROLE COMPETENCIES */
+.legend { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:12px; }
+.leg { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--gray-600); }
+.ldot { width:9px; height:9px; border-radius:3px; flex-shrink:0; }
+.comparison { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.col-header { padding:10px 14px; border-radius:var(--radius-sm) var(--radius-sm) 0 0; font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.05em; }
+.col-now { background:var(--blue); color:var(--white); }
+.col-next { background:var(--blue-pale); color:var(--blue-dark); }
+.col-body { border:1px solid var(--gray-100); border-top:none; border-radius:0 0 var(--radius-sm) var(--radius-sm); background:var(--white); }
+.comp-row { padding:11px 14px; border-bottom:1px solid var(--gray-100); }
+.comp-row:last-child { border-bottom:none; }
+.comp-name { font-size:12.5px; font-weight:500; color:var(--gray-900); margin-bottom:4px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.comp-desc { font-size:12px; color:var(--gray-600); line-height:1.55; }
+.comp-na { font-size:12px; color:var(--gray-400); font-style:italic; }
+.badge { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:400; white-space:nowrap; }
+.b-u { background:var(--blue-bg); color:var(--blue-dark); }
+.b-r { background:#EDF4FF; color:var(--blue-darker); border:1px solid var(--blue-pale); }
+.b-s { background:var(--gold-bg); color:var(--gold-dark); }
+.b-new { background:var(--gold-light); color:var(--gold-dark); font-weight:500; }
+
+/* ── HERO ── */
+.hero { position:relative; padding:8px 0 22px; margin-bottom:8px; }
+.hero-deco { position:absolute; top:-8px; right:-12px; width:120px; height:120px; pointer-events:none; opacity:0.5; }
+.hero-title { font-size:30px; font-weight:500; color:var(--gray-900); letter-spacing:-.025em; margin-bottom:6px; line-height:1.15; }
+.hero-subtitle { font-size:14px; color:var(--gray-600); max-width:780px; line-height:1.55; font-weight:400; }
+.hero-rule { height:1px; background:linear-gradient(90deg,var(--gray-200) 0%,transparent 100%); margin:22px 0 18px; }
+
+/* ── SECTION HEADER WITH ICON ── */
+.sec-h { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+.sec-h-icon { width:24px; height:24px; display:flex; align-items:center; justify-content:center; color:var(--blue); flex-shrink:0; }
+.sec-h-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.09em; color:var(--gray-600); }
+.sec-h-rule { flex:1; height:1px; background:var(--gray-100); margin-left:6px; }
+
+/* ── NAVIGATE STEPS ── */
+.nav-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+.nav-step { background:var(--blue-bg); border:1px solid var(--blue-pale); border-radius:var(--radius-sm); padding:14px 14px 13px; position:relative; }
+.nav-step-num { position:absolute; top:14px; left:14px; width:22px; height:22px; border-radius:50%; background:var(--blue); color:var(--white); font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center; }
+.nav-step-body { padding-left:32px; font-size:12.5px; color:var(--gray-600); line-height:1.55; }
+.nav-step-body strong { color:var(--gray-900); font-weight:600; }
+
+/* ── ORG STRUCTURE INTRO ── */
+.org-intro { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+.org-intro-card { padding:16px 18px 17px; border-radius:var(--radius-sm); border:1px solid; border-left-width:3px; }
+.org-intro-card.is-ic { background:linear-gradient(180deg,var(--blue-bg) 0%,var(--white) 100%); border-color:var(--blue-pale); border-left-color:var(--blue); }
+.org-intro-card.is-mg { background:linear-gradient(180deg,var(--gold-bg) 0%,var(--white) 100%); border-color:var(--gold-light); border-left-color:var(--gold); }
+.org-intro-title { font-size:14px; font-weight:600; margin-bottom:6px; letter-spacing:-.005em; }
+.org-intro-card.is-ic .org-intro-title { color:var(--blue-darker); }
+.org-intro-card.is-mg .org-intro-title { color:var(--gold-dark); }
+.org-intro-text { font-size:12.5px; color:var(--gray-600); line-height:1.55; }
+
+/* ── WHAT YOU NEED TO KNOW ── */
+.wynk { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+.wynk-card { background:var(--white); border:1px solid var(--gray-100); border-radius:var(--radius-sm); padding:14px 15px 15px; }
+.wynk-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.wynk-title { font-size:13px; font-weight:600; color:var(--gray-900); }
+.wynk-anchor { font-size:9.5px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; padding:2px 7px; border-radius:8px; background:var(--blue-bg); color:var(--blue-dark); border:1px solid var(--blue-pale); }
+.wynk-text { font-size:12px; color:var(--gray-600); line-height:1.55; }
+.wynk-text strong { color:var(--gray-900); font-weight:600; }
+
+/* ── ROLE COMPETENCIES — TYPES EXPLAINER ── */
+.types-intro { font-size:12.5px; color:var(--gray-600); line-height:1.55; padding:11px 14px; background:var(--blue-bg); border-left:3px solid var(--blue); border-radius:4px; margin-bottom:14px; }
+.types-grid { display:flex; flex-direction:column; gap:10px; }
+.type-card { background:var(--gray-50); border-radius:var(--radius-sm); padding:12px 14px 13px; border:1px solid var(--gray-100); border-left:3px solid; }
+.type-card.is-u { border-left-color:var(--blue-light); }
+.type-card.is-r { border-left-color:var(--blue); }
+.type-card.is-s { border-left-color:var(--gold); }
+.type-head { display:flex; align-items:center; gap:8px; margin-bottom:5px; flex-wrap:wrap; }
+.type-title { font-size:13px; font-weight:600; color:var(--gray-900); }
+.type-tag { font-size:9.5px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; padding:2px 7px; border-radius:8px; }
+.type-tag.is-u { background:var(--blue-bg); color:var(--blue-dark); border:1px solid var(--blue-pale); }
+.type-tag.is-r { background:#EDF4FF; color:var(--blue-darker); border:1px solid var(--blue-pale); }
+.type-tag.is-s { background:var(--gold-bg); color:var(--gold-dark); border:1px solid var(--gold-light); }
+.type-text { font-size:12px; color:var(--gray-600); line-height:1.55; margin-bottom:6px; }
+.type-examples { font-size:11.5px; color:var(--gray-600); font-style:italic; }
+.type-examples strong { font-style:normal; font-weight:600; color:var(--gray-900); margin-right:4px; }
+
+/* ── CURRENT LEVEL ── */
+.curlev { background:var(--white); border:1px solid var(--gray-100); border-radius:var(--radius); padding:18px 20px 19px; margin-bottom:18px; }
+.curlev-h { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.curlev-icon { width:36px; height:36px; border-radius:50%; background:var(--blue-bg); border:1px solid var(--blue-pale); display:flex; align-items:center; justify-content:center; color:var(--blue); flex-shrink:0; }
+.curlev-h-text { flex:1; min-width:0; }
+.curlev-h-title { font-size:17px; font-weight:600; color:var(--gray-900); letter-spacing:-.01em; line-height:1.2; }
+.curlev-h-sub { font-size:12px; color:var(--gray-600); margin-top:2px; }
+.curlev-rule { height:1px; background:var(--gray-100); margin-bottom:12px; }
+.curlev-card { background:var(--blue-bg); border:1px solid var(--blue-pale); border-left:3px solid var(--blue); border-radius:var(--radius-sm); padding:12px 14px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.curlev-card.is-mg { background:var(--gold-bg); border-color:var(--gold-light); border-left-color:var(--gold); }
+.curlev-pill { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; padding:3px 9px; border-radius:10px; background:var(--white); color:var(--blue-dark); border:1px solid var(--blue-pale); flex-shrink:0; }
+.curlev-card.is-mg .curlev-pill { color:var(--gold-dark); border-color:var(--gold-light); }
+.curlev-headline { font-size:13.5px; font-weight:600; color:var(--gray-900); flex-shrink:0; }
+.curlev-text { flex:1; min-width:200px; font-size:12.5px; color:var(--gray-600); line-height:1.55; }
+.curlev-text strong { color:var(--gray-900); font-weight:600; }
+
+/* ── PROGRESSION PATH ── */
+.prog { background:var(--white); border:1px solid var(--gray-100); border-radius:var(--radius); padding:18px 20px 20px; margin-bottom:18px; }
+.prog-h { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.prog-icon { width:36px; height:36px; border-radius:50%; background:var(--blue-bg); border:1px solid var(--blue-pale); display:flex; align-items:center; justify-content:center; color:var(--blue); flex-shrink:0; }
+.prog-h-text { flex:1; min-width:0; }
+.prog-h-title { font-size:17px; font-weight:600; color:var(--gray-900); letter-spacing:-.01em; line-height:1.2; }
+.prog-h-sub { font-size:12px; color:var(--gray-600); margin-top:2px; }
+.prog-rule { height:1px; background:var(--gray-100); margin-bottom:14px; }
+.prog-intro { font-size:12.5px; color:var(--gray-600); line-height:1.55; margin-bottom:12px; max-width:780px; }
+.prog-types-link { display:inline-flex; align-items:center; gap:8px; margin-bottom:16px; padding:4px 4px 4px 0; cursor:pointer; user-select:none; }
+.prog-types-pill { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; padding:3px 9px; border-radius:10px; background:var(--blue-bg); color:var(--blue-dark); border:1px solid var(--blue-pale); }
+.prog-types-hint { font-size:11.5px; color:var(--gray-600); font-style:italic; }
+
+/* ── COMPETENCY GROUPS (by type) ── */
+.cmp-group { margin-bottom:16px; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--gray-100); }
+.cmp-group:last-child { margin-bottom:0; }
+.cmp-group-banner { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--blue-bg); border-bottom:1px solid var(--blue-pale); flex-wrap:wrap; }
+.cmp-group.is-s .cmp-group-banner { background:var(--gold-bg); border-bottom-color:var(--gold-light); }
+.cmp-group-title { font-size:12.5px; font-weight:600; color:var(--blue-darker); letter-spacing:-.005em; }
+.cmp-group.is-s .cmp-group-title { color:var(--gold-dark); }
+.cmp-group-hint { font-size:11.5px; color:var(--gray-600); font-style:italic; flex:1; min-width:120px; }
+.cmp-group-count { font-size:10.5px; font-weight:600; color:var(--gray-600); background:var(--white); padding:2px 8px; border-radius:10px; border:1px solid var(--gray-200); flex-shrink:0; }
+.cmp-group-body { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.cmp-group-col { padding:0; }
+.cmp-group-col-h { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; padding:9px 14px 8px; background:var(--white); }
+.cmp-group-col.is-now .cmp-group-col-h { color:var(--blue); border-bottom:1px solid var(--gray-100); }
+.cmp-group-col.is-next .cmp-group-col-h { color:var(--gold-dark); border-bottom:1px solid var(--gray-100); background:var(--gold-bg); }
+.cmp-group-col .comp-row { padding:11px 14px; border-bottom:1px solid var(--gray-100); }
+.cmp-group-col .comp-row:last-child { border-bottom:none; }
+
+/* ── NEXT ROLE ── */
+.nextrole { background:var(--white); border:1px solid var(--gray-100); border-radius:var(--radius); padding:18px 20px 20px; margin-bottom:0; }
+.nextrole-h { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.nextrole-icon { width:36px; height:36px; border-radius:50%; background:var(--gold-bg); border:1px solid var(--gold-light); display:flex; align-items:center; justify-content:center; color:var(--gold-dark); flex-shrink:0; }
+.nextrole-h-text { flex:1; min-width:0; }
+.nextrole-h-title { font-size:17px; font-weight:600; color:var(--gray-900); letter-spacing:-.01em; line-height:1.2; }
+.nextrole-h-sub { font-size:12px; color:var(--gray-600); margin-top:2px; }
+.nextrole-rule { height:1px; background:var(--gray-100); margin-bottom:14px; }
+.nextrole-path { background:var(--blue); border-radius:var(--radius-sm); padding:18px 20px; position:relative; overflow:hidden; margin-bottom:16px; }
+.nextrole-path.is-mg { background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%); }
+.nextrole-path .blob { background:rgba(255,255,255,0.06); }
+.nextrole-path-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,0.55); margin-bottom:14px; position:relative; z-index:1; }
+.nextrole-path-flow { display:flex; align-items:center; gap:0; position:relative; z-index:1; }
+.nrp-step { display:flex; flex-direction:column; align-items:center; flex-shrink:0; }
+.nrp-circle { width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; flex-shrink:0; }
+.nrp-circle.current { background:var(--white); color:var(--blue); border:2px solid var(--white); }
+.nrp-circle.next { background:rgba(255,255,255,0.3); color:var(--white); border:2px solid rgba(255,255,255,0.6); }
+.nrp-label { font-size:10.5px; color:var(--white); text-align:center; margin-top:8px; max-width:110px; line-height:1.35; font-weight:500; }
+.nrp-label.next { color:rgba(255,255,255,0.85); }
+.nrp-arrow { width:28px; height:2px; background:rgba(255,255,255,0.45); flex-shrink:0; position:relative; margin-bottom:24px; }
+.nrp-arrow::after { content:''; position:absolute; right:-5px; top:-4px; border-left:8px solid rgba(255,255,255,0.45); border-top:5px solid transparent; border-bottom:5px solid transparent; }
+
+.nextrole-detail { background:var(--gold-bg); border:1px solid var(--gold-light); border-left:3px solid var(--gold); border-radius:var(--radius-sm); padding:16px 18px 18px; position:relative; overflow:hidden; }
+.nextrole-detail-deco { position:absolute; top:-30px; right:-30px; width:120px; height:120px; border-radius:50%; background:rgba(201,169,110,0.08); pointer-events:none; }
+.nextrole-detail-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--gold-dark); margin-bottom:8px; display:flex; align-items:center; gap:6px; position:relative; z-index:1; }
+.nextrole-detail-arrow { font-size:13px; }
+.nextrole-detail-title { font-size:21px; font-weight:600; color:var(--gray-900); letter-spacing:-.015em; margin-bottom:6px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; position:relative; z-index:1; }
+.nextrole-level-pill { font-size:10.5px; font-weight:600; color:var(--white); background:var(--gray-900); padding:3px 9px; border-radius:10px; letter-spacing:.02em; }
+.nextrole-detail-desc { font-size:13px; color:var(--gray-600); line-height:1.6; margin-bottom:14px; max-width:780px; position:relative; z-index:1; }
+.highlights { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; position:relative; z-index:1; }
+.highlight-box { background:var(--white); border:1px solid var(--gold-light); border-radius:var(--radius-sm); padding:11px 12px 12px; font-size:11.5px; color:var(--gray-600); line-height:1.5; }
+.highlight-box::before { content:'→'; color:var(--gold-dark); margin-right:5px; font-weight:600; }
+.highlight-box strong { color:var(--gray-900); font-weight:600; }
+.focus-block { padding-top:12px; border-top:1px dashed var(--gold-light); position:relative; z-index:1; }
+.focus-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; color:var(--gold-dark); margin-bottom:8px; }
+.focus-badges { display:flex; flex-wrap:wrap; gap:7px; }
+.focus-badge { font-size:11.5px; font-weight:500; color:var(--gray-900); background:var(--white); padding:4px 11px; border-radius:14px; border:1px solid var(--gold-light); cursor:default; }
+
+/* ── ALSO-RELEVANT: tweak legacy comparison row width inside groups ── */
+.cmp-group-col .comp-row .comp-na { font-size:12px; color:var(--gray-400); font-style:italic; }
+
+@media (max-width:850px) {
+  .paths-container { grid-template-columns:1fr; }
+  .ld-grid,.ld-grid.cols-2,.cmp-grid-2,.cmp-grid-3 { grid-template-columns:1fr; }
+  .nav-steps, .wynk { grid-template-columns:1fr; }
+  .org-intro { grid-template-columns:1fr; }
+  .highlights { grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:700px) {
+  .comparison { grid-template-columns:1fr; }
+  .cmp-group-body { grid-template-columns:1fr; }
+  .cmp-group-col.is-next .cmp-group-col-h { border-top:1px solid var(--gray-100); }
+  .header-inner { padding:14px 20px; }
+  .container { padding:16px 16px 40px; }
+  .gate-card { padding:32px 24px 28px; }
+  .panel-hint { display:none; }
+  .hero-title { font-size:24px; }
+  .highlights { grid-template-columns:1fr; }
+  .nextrole-detail-title { font-size:18px; }
+  .curlev, .prog, .nextrole { padding:14px 16px 16px; }
+}
+.comp-desc ul.sub,.comp-na ul.sub{margin:2px 0 0;padding-left:16px}.comp-desc ul.sub li{margin:3px 0}</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-bg">
+    <div class="gate-blob gb1"></div><div class="gate-blob gb2"></div><div class="gate-blob gb3"></div>
+    <svg class="gate-deco-tl" width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M24 3 L26 22 L45 24 L26 26 L24 45 L22 26 L3 24 L22 22 Z" stroke="#C9A96E" stroke-width="1" fill="none"/></svg>
+    <svg class="gate-deco-br" width="80" height="40" viewBox="0 0 80 40" fill="none"><path d="M4 20 Q20 4 40 20 Q60 36 76 20" stroke="#C9A96E" stroke-width="1" fill="none"/><path d="M12 28 Q28 12 48 28" stroke="#C9A96E" stroke-width="0.8" fill="none" opacity="0.5"/></svg>
+  </div>
+  <div class="gate-card">
+    <div class="gate-logo">amenitiz</div>
+    <div class="gate-title">Career Compass</div>
+    <div class="gate-sub">Sign in with your Amenitiz email to access your career framework.</div>
+    <div class="gate-field"><label class="gate-label" for="gate-email">Work email</label><input class="gate-input" type="email" id="gate-email" placeholder="you@amenitiz.com" autocomplete="email"></div>
+    <div class="gate-field"><label class="gate-label" for="gate-password">Password</label><input class="gate-input" type="password" id="gate-password" placeholder="••••••••••••" autocomplete="current-password"></div>
+    <div class="gate-error" id="gate-error"></div>
+    <button class="gate-btn" id="gate-submit">Access Career Compass</button>
+    <div class="gate-hint">Access restricted to @amenitiz.com accounts</div>
+  </div>
+</div>
+
+<div id="app">
+<header>
+  <div class="header-bg">
+    <div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div>
+    <svg class="deco-svg" width="60" height="60" viewBox="0 0 60 60" fill="none"><path d="M30 4 L32 28 L56 30 L32 32 L30 56 L28 32 L4 30 L28 28 Z" stroke="#C9A96E" stroke-width="1" fill="none" opacity="0.6"/></svg>
+  </div>
+  <div class="header-inner">
+    <div class="logo">amenitiz</div>
+    <div class="header-right">
+      <div class="header-tag">career compass — customer success</div>
+      <button class="logout-btn" id="logout-btn">sign out</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <svg class="hero-deco" viewBox="0 0 120 120" fill="none">
+      <circle cx="60" cy="60" r="58" stroke="#C9A96E" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <circle cx="60" cy="60" r="40" stroke="#C9A96E" stroke-width="0.6" fill="none" opacity="0.3"/>
+      <path d="M60 8 L62 56 L108 60 L62 62 L60 110 L58 62 L12 60 L58 56 Z" stroke="#C9A96E" stroke-width="0.8" fill="none" opacity="0.45"/>
+    </svg>
+    <div class="hero-title">Career Compass — Customer Success</div>
+    <div class="hero-subtitle">A clear view of where you are in your career, where you can grow next, and what's expected at every step.</div>
+  </div>
+  <div class="hero-rule"></div>
+
+  <!-- HOW TO NAVIGATE -->
+  <div class="sec-h">
+    <div class="sec-h-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.3"/><path d="M9 4 L10.5 8 L9 12 L7.5 8 Z" fill="currentColor" opacity="0.6"/></svg></div>
+    <span class="sec-h-label">How to navigate the compass</span>
+    <span class="sec-h-rule"></span>
+  </div>
+  <div class="nav-steps">
+    <div class="nav-step"><div class="nav-step-num">1</div><div class="nav-step-body"><strong>Pick your role.</strong> Click any role card in the IC or Manager grid below. The compass adapts to show what's expected at your level.</div></div>
+    <div class="nav-step"><div class="nav-step-num">2</div><div class="nav-step-body"><strong>Explore your path.</strong> See where you are now, what comes next in your career, and which competencies define the progression.</div></div>
+    <div class="nav-step"><div class="nav-step-num">3</div><div class="nav-step-body"><strong>Use the reference.</strong> Level definitions and Core Competencies (universal across Amenitiz) are available in the reference panels below.</div></div>
+  </div>
+
+  <!-- YOUR ORGANIZATIONAL STRUCTURE -->
+  <div class="sec-h">
+    <div class="sec-h-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="10" y="2" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="10" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="10" y="10" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/></svg></div>
+    <span class="sec-h-label">Your organizational structure</span>
+    <span class="sec-h-rule"></span>
+  </div>
+  <div class="org-intro">
+    <div class="org-intro-card is-ic">
+      <div class="org-intro-title">Individual Contributor (IC)</div>
+      <div class="org-intro-text">One IC path in Customer Success: the <strong>Customer Success Manager</strong> owns a book of accounts end to end — growth, renewals and churn prevention. At each level — IC1 → IC2 → IC3 — you gain autonomy, take on more complex accounts and shape the team's playbook.</div>
+    </div>
+    <div class="org-intro-card is-mg">
+      <div class="org-intro-title">Manager track</div>
+      <div class="org-intro-text">Lead the Customer Success team. The manager track goes from <strong>Team Lead</strong> (M3) to <strong>Customer Success Manager</strong> (M4), <strong>Head of Customer Success</strong> (M5) and the <strong>VP of Customer Success</strong>, who also leads Onboarding and Care. Growth means coaching teams, scaling strategy across markets and shaping the playbook.</div>
+    </div>
+  </div>
+  <div class="paths-container" id="pathsContainer"></div>
+
+  <!-- WHAT YOU NEED TO KNOW -->
+  <div class="sec-h">
+    <div class="sec-h-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3 L3 15 L9 13 L15 15 L15 3 L9 5 L3 3 Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9 5 L9 13" stroke="currentColor" stroke-width="1.3"/></svg></div>
+    <span class="sec-h-label">What you need to know</span>
+    <span class="sec-h-rule"></span>
+  </div>
+  <div class="wynk">
+    <div class="wynk-card">
+      <div class="wynk-head"><div class="wynk-title">Level Definition</div><span class="wynk-anchor">below</span></div>
+      <div class="wynk-text">Each level (IC2, IC3, M3, etc.) has a clear scope and impact expectation. <strong>Universal across Amenitiz</strong> — an IC3 in Care maps to an IC3 anywhere else in the company.</div>
+    </div>
+    <div class="wynk-card">
+      <div class="wynk-head"><div class="wynk-title">Core Competencies</div><span class="wynk-anchor">below</span></div>
+      <div class="wynk-text">Four company-wide behaviours expected of everyone. They appear in every performance review and evolve in expectation as you grow in level.</div>
+    </div>
+    <div class="wynk-card">
+      <div class="wynk-head"><div class="wynk-title">Role Competencies</div><span class="wynk-anchor">below</span></div>
+      <div class="wynk-text">Specific to your role and track — the technical and leadership skills that define excellence in your discipline. Grouped by type: <strong>Universal, Role-specific, Seniority-gated</strong>.</div>
+    </div>
+  </div>
+
+  <!-- 2) LEVEL DEFINITION (collapsible — opens when clicking a level on the left) -->
+  <div class="panel" id="ldPanel">
+    <div class="panel-header" data-target="ldPanel">
+      <span class="panel-icon">Level Definition</span>
+      <span class="panel-title" id="ldTitle"></span>
+      <span class="panel-hint">click a level on the left, or this header, to open</span>
+      <span class="panel-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+    <div class="panel-body">
+      <div class="panel-inner" id="ldInner"></div>
+    </div>
+  </div>
+
+  <!-- 3) CORE COMPETENCIES (collapsible — tabs Core / Manager Persona) -->
+  <div class="panel" id="cmpPanel">
+    <div class="panel-header" data-target="cmpPanel">
+      <span class="panel-icon">Core Competencies</span>
+      <span class="panel-title" id="cmpTitle"></span>
+      <span class="panel-hint">click a tab below to switch</span>
+      <span class="panel-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+    <div class="panel-body">
+      <div class="panel-inner">
+        <div class="cmp-tabs" id="cmpTabs"></div>
+        <div id="cmpContents"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4) ROLE COMPETENCIES — UNDERSTANDING THE TYPES (collapsible) -->
+  <div class="panel" id="typesPanel">
+    <div class="panel-header" data-target="typesPanel">
+      <span class="panel-icon">Role Competencies — Types</span>
+      <span class="panel-title"><span class="panel-title-strong">Understanding the three categories</span> · Universal · Role-specific · Seniority-gated</span>
+      <span class="panel-hint">click to learn how role competencies are grouped</span>
+      <span class="panel-chevron"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+    <div class="panel-body">
+      <div class="panel-inner">
+        <div class="types-intro">Role competencies are grouped by type to help you understand what's expected universally, what's specific to your craft, and what unlocks as you grow in seniority.</div>
+        <div class="types-grid">
+          <div class="type-card is-u">
+            <div class="type-head"><div class="type-title">The foundations</div><span class="type-tag is-u">Universal</span></div>
+            <div class="type-text">Expected at every role at Amenitiz, regardless of track or seniority. The company's shared baseline — what makes someone effective here, no matter what they do.</div>
+            <div class="type-examples"><strong>Examples:</strong> Customer Centricity · Business Acumen · Operational Excellence</div>
+          </div>
+          <div class="type-card is-r">
+            <div class="type-head"><div class="type-title">Your craft</div><span class="type-tag is-r">Role-specific</span></div>
+            <div class="type-text">The technical and functional skills unique to your discipline. As you grow within a track, you go deeper here — this is what defines your expertise.</div>
+            <div class="type-examples"><strong>Examples:</strong> Product Knowledge · CRM Architecture · Customer Empathy & Communication · Quality Focus</div>
+          </div>
+          <div class="type-card is-s">
+            <div class="type-head"><div class="type-title">Leadership edge</div><span class="type-tag is-s">Seniority-gated</span></div>
+            <div class="type-text">Unlock as you grow into broader scope — typically from IC3 upward. About influence, mentorship and strategy. Often the difference between executing well and leading a function.</div>
+            <div class="type-examples"><strong>Examples:</strong> Influence & Persuasion · Relationship Management · Strategic Thinking · Decisiveness</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4) YOUR CURRENT LEVEL -->
+  <div class="curlev" id="curlev">
+    <div class="curlev-h">
+      <div class="curlev-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9" r="2" fill="currentColor"/></svg></div>
+      <div class="curlev-h-text">
+        <div class="curlev-h-title">Your current level</div>
+        <div class="curlev-h-sub">Where you are today</div>
+      </div>
+    </div>
+    <div class="curlev-rule"></div>
+    <div class="curlev-card" id="curlevCard"></div>
+  </div>
+
+  <!-- 5) YOUR PROGRESSION PATH (grouped by type) -->
+  <div class="prog">
+    <div class="prog-h">
+      <div class="prog-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 14 L5 10 L8 12 L11 6 L14 8 L16 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+      <div class="prog-h-text">
+        <div class="prog-h-title">Your progression path</div>
+        <div class="prog-h-sub">What you do now and what comes next at each competency</div>
+      </div>
+    </div>
+    <div class="prog-rule"></div>
+    <div class="prog-intro">These are the specific skills and behaviours we expect at your role. Each competency shows where you are now and what's expected at the next level. Used in performance reviews alongside Core Competencies.</div>
+    <div class="prog-types-link" onclick="document.getElementById('typesPanel').classList.add('is-open'); document.getElementById('typesPanel').scrollIntoView({behavior:'smooth',block:'start'});">
+      <span class="prog-types-pill">Role Competencies — Understanding the Types</span>
+      <span class="prog-types-hint">— tap to see how competencies are grouped</span>
+    </div>
+    <div id="progGroups"></div>
+  </div>
+
+  <!-- 8) YOUR NEXT ROLE -->
+  <div class="nextrole" id="nextroleBlock">
+    <div class="nextrole-h">
+      <div class="nextrole-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9 L14 9 M10 5 L14 9 L10 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+      <div class="nextrole-h-text">
+        <div class="nextrole-h-title">Your next role</div>
+        <div class="nextrole-h-sub">Ready to look ahead? Here's the big picture of what changes</div>
+      </div>
+    </div>
+    <div class="nextrole-rule"></div>
+    <div class="nextrole-path" id="nextrolePath"></div>
+    <div class="nextrole-detail" id="nextroleDetail"></div>
+  </div>
+
+  <!-- 7) YOUR FULL CAREER PATH (moved below "Your next role") -->
+  <div class="sec-h" style="margin-top:22px;">
+    <div class="sec-h-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 9 L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="3.5" cy="9" r="2" stroke="currentColor" stroke-width="1.3" fill="white"/><circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="1.3" fill="currentColor"/><circle cx="14.5" cy="9" r="2" stroke="currentColor" stroke-width="1.3" fill="white"/></svg></div>
+    <span class="sec-h-label">Your full career path</span>
+    <span class="sec-h-rule"></span>
+  </div>
+  <div class="journey-card">
+    <div class="blob jb1"></div><div class="blob jb2"></div>
+    <svg class="journey-deco" width="50" height="50" viewBox="0 0 50 50" fill="none"><path d="M10 25 Q18 8 25 25 Q32 42 40 25" stroke="#C9A96E" stroke-width="1.2" fill="none"/><path d="M15 35 Q22 18 30 35" stroke="#C9A96E" stroke-width="1" fill="none" opacity="0.5"/></svg>
+    <div class="journey-label">all stops on your track — click any step to jump there</div>
+    <div class="journey" id="journey"></div>
+    <div class="laterals" id="lateralsRow" style="display:none"></div>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ── AUTH ──
+const PASS='Raisethebar', DOMAIN='@amenitiz.com', SESSION_KEY='cc_cs_auth';
+function checkSession() { return sessionStorage.getItem(SESSION_KEY)==='1'; }
+function unlock() { sessionStorage.setItem(SESSION_KEY,'1'); document.getElementById('gate').classList.add('hidden'); document.getElementById('app').classList.add('visible'); }
+function lock() { sessionStorage.removeItem(SESSION_KEY); document.getElementById('gate').classList.remove('hidden'); document.getElementById('app').classList.remove('visible'); document.getElementById('gate-email').value=''; document.getElementById('gate-password').value=''; document.getElementById('gate-error').textContent=''; }
+document.getElementById('gate-submit').addEventListener('click', function() {
+  const email=document.getElementById('gate-email').value.trim().toLowerCase();
+  const pass=document.getElementById('gate-password').value;
+  const errEl=document.getElementById('gate-error'), emailEl=document.getElementById('gate-email'), passEl=document.getElementById('gate-password');
+  emailEl.classList.remove('error'); passEl.classList.remove('error'); errEl.textContent='';
+  if (!email.endsWith(DOMAIN)) { emailEl.classList.add('error'); errEl.textContent='Please use your @amenitiz.com email address.'; return; }
+  if (pass!==PASS) { passEl.classList.add('error'); errEl.textContent='Incorrect password. Please try again.'; return; }
+  unlock();
+});
+['gate-email','gate-password'].forEach(id => { document.getElementById(id).addEventListener('keydown', function(e) { if (e.key==='Enter') document.getElementById('gate-submit').click(); }); });
+document.getElementById('logout-btn').addEventListener('click', lock);
+if (checkSession()) unlock();
+
+// ── DATA ──
+const roles = {
+ "ic1": {
+  "label": "Customer Success Specialist",
+  "level": "IC1",
+  "track": "IC",
+  "nextId": "ic2",
+  "nextLabel": "Customer Success Manager",
+  "nextLevel": "IC2",
+  "journeyIds": [
+   "ic1",
+   "ic2",
+   "ic3",
+   "m3",
+   "m4",
+   "m5",
+   "vp"
+  ],
+  "summary": "Entry level in Customer Success. Manages a portfolio of accounts with clear guidance and playbooks: runs check-ins, renewals, first save calls and standard upsell offers, and builds deep product and market knowledge.",
+  "competencies": [
+   {
+    "name": "Customer Centricity",
+    "type": "Universal",
+    "now": "Puts the hotelier's goals at the centre of every interaction and follows through on what was promised.",
+    "next": "Anticipates hoteliers' needs and adapts the approach to each account's context and business goals."
+   },
+   {
+    "name": "Operational Excellence",
+    "type": "Universal",
+    "now": "Follows defined processes consistently and manages own workload reliably.",
+    "next": "Manages a full book autonomously and proposes improvements to own workflows."
+   },
+   {
+    "name": "Business Acumen",
+    "type": "Universal",
+    "now": "Understands how customer retention and growth contribute to Amenitiz's revenue.",
+    "next": "Uses business context to prioritise accounts and make commercial decisions on own book."
+   },
+   {
+    "name": "Industry knowledge",
+    "type": "Role-specific",
+    "now": "Knows the basics of own market: legislation and fiscal rules, GDPR and registration requirements, the main OTA channels and their commissions, and the top competitors. Understands the payment flow and the seasonality of own accounts, follows travel news and knows which local associations exist.",
+    "next": "Explains legislative and fiscal changes and the next steps in Amenitiz, and answers common regulatory questions, escalating the rest. Advises on direct vs OTA from the channel mix and on deposits and chargebacks, handles competitor comparisons and win-backs, times outreach to the season, uses travel trends in conversations and leverages local associations for credibility."
+   },
+   {
+    "name": "Product knowledge",
+    "type": "Role-specific",
+    "now": "Names the core jobs of a small hotel and explains features in the hotelier's own words. Is solid on PMS and channel manager with the basics of one further module (Ami, POS), and knows plans and inclusions, what is live, three key differentiators and which integrations exist.",
+    "next": "Maps each account's jobs and gaps and ties features to account outcomes. Can demo every module and is deep in two, sizes plans and add-ons and explains changes, sets roadmap expectations without over-promising, positions against a named competitor live and diagnoses common integration issues with Tech."
+   },
+   {
+    "name": "Project management",
+    "type": "Role-specific",
+    "now": "Builds simple plans for priority accounts and follows the 90/60/30-day renewal checklist. Knows who plays which role at the property, logs every touch the same day, uses the handoff template, follows playbooks, escalates early per guide and closes tasks on time with a weekly check.",
+    "next": "Owns plans for the whole book, tiered by touch model, and owns renewals end to end. Maps and engages decision-makers, keeps health and risk fields current, closes the loop with Care and Onboarding, decides when to escalate or solve, flags where playbooks fail and plans the week from data with nothing overdue."
+   },
+   {
+    "name": "Tactical communication",
+    "type": "Role-specific",
+    "now": "Works from a question guide, summarises back what they hear and explains value from a template. Uses approved offers, handles the top five objections from script, runs first save calls from script and leads conversations with single-property owners. Delivers 1:1 training with the guide, nudges low-usage accounts and meets the market's language bar.",
+    "next": "Uncovers goals, pains and seasonality, reads tone and signals and builds ROI with the hotelier's own numbers. Negotiates within guardrails, finds the real objection, runs the full save conversation choosing the right option and leads conversations with small groups. Runs group training sessions, builds plans for low-usage accounts and is fluent, handling nuance in the market language."
+   },
+   {
+    "name": "Pipeline management",
+    "type": "Role-specific",
+    "now": "Works the daily at-risk list and queue, spots usage drops and failed payments and flags at-risk accounts within 24 hours, recording every churn reason. Presents the standard offer when a trigger fires and follows up within 48 hours, uses the given segments and knows ARPA, NRR and GRR. Reports own expected renewals and compares forecast to actuals monthly.",
+    "next": "Triages own book by health and value, combines signals into an action, owns a risk plan per account and prioritises by € at stake. Builds the case from account data, qualifies budget, decision-maker and timing and closes, choosing the right play per account and understanding how own choices move NRR and margin. Reviews win/loss monthly and forecasts renewals and expansion MRR within ±15% (proposed)."
+   },
+   {
+    "name": "Data and AI fluency",
+    "type": "Role-specific",
+    "now": "Reads the HubSpot book view, works the daily list and pulls standard reports. Uses approved AI tools, checks their output and records the outcome of each play.",
+    "next": "Decides where to spend time from NRR, save rate and health data and builds own book reports. Supervises the AI-run portfolio, corrects the AI where needed, compares plays and keeps what works."
+   },
+   {
+    "name": "Team Enablement & Mentorship",
+    "type": "Seniority-gated",
+    "now": "Not yet applicable at this level.",
+    "next": "Not yet applicable at the next level — unlocks at IC3."
+   },
+   {
+    "name": "Cross-functional Collaboration",
+    "type": "Seniority-gated",
+    "now": "Not yet applicable at this level.",
+    "next": "Not yet applicable at the next level — unlocks at IC3."
+   }
+  ]
+ },
+ "ic2": {
+  "label": "Customer Success Manager",
+  "level": "IC2",
+  "track": "IC",
+  "nextId": "ic3",
+  "nextLabel": "Sr Customer Success Manager",
+  "nextLevel": "IC3",
+  "journeyIds": [
+   "ic1",
+   "ic2",
+   "ic3",
+   "m3",
+   "m4",
+   "m5",
+   "vp"
+  ],
+  "summary": "Owns a tiered book of accounts end to end: growth, renewals and churn prevention. Uses data to decide where to spend time, closes expansion deals and runs full save conversations, supervising an AI-run portfolio alongside the high-touch book.",
+  "competencies": [
+   {
+    "name": "Customer Centricity",
+    "type": "Universal",
+    "now": "Anticipates hoteliers' needs and adapts the approach to each account's context and business goals.",
+    "next": "Acts as a trusted advisor to the most complex accounts and brings the customer's perspective into team decisions."
+   },
+   {
+    "name": "Operational Excellence",
+    "type": "Universal",
+    "now": "Manages a full book autonomously and proposes improvements to own workflows.",
+    "next": "Raises the bar on team workflows and drives scalable process improvements."
+   },
+   {
+    "name": "Business Acumen",
+    "type": "Universal",
+    "now": "Uses business context to prioritise accounts and make commercial decisions on own book.",
+    "next": "Connects book performance to company economics and contributes to Customer Success planning."
+   },
+   {
+    "name": "Industry knowledge",
+    "type": "Role-specific",
+    "now": "Explains legislative and fiscal changes and the next steps in Amenitiz, and answers common regulatory questions, escalating the rest. Advises on direct vs OTA from the channel mix and on deposits and chargebacks, handles competitor comparisons and win-backs, times outreach to the season, uses travel trends in conversations and leverages local associations for credibility.",
+    "next": "Spots changes across the four EU markets, briefs the team and Product, and sets regulatory guidance with Legal, owning the FAQ. Turns channel shifts and travel trends into team plays and account strategy, keeps battlecards current, shapes payments as a growth lever, builds the seasonal CS calendar and builds relationships with local associations, speaking at their events."
+   },
+   {
+    "name": "Product knowledge",
+    "type": "Role-specific",
+    "now": "Maps each account's jobs and gaps and ties features to account outcomes. Can demo every module and is deep in two, sizes plans and add-ons and explains changes, sets roadmap expectations without over-promising, positions against a named competitor live and diagnoses common integration issues with Tech.",
+    "next": "Segments the book by jobs and builds reusable value stories. Is the team's product reference: fixes cross-module setup issues and coaches others, shapes discount guardrails, feeds demand to the roadmap with ARR at stake, maintains messaging from lost-account data and scopes custom requests, spotting partner opportunities."
+   },
+   {
+    "name": "Project management",
+    "type": "Role-specific",
+    "now": "Owns plans for the whole book, tiered by touch model, and owns renewals end to end. Maps and engages decision-makers, keeps health and risk fields current, closes the loop with Care and Onboarding, decides when to escalate or solve, flags where playbooks fail and plans the week from data with nothing overdue.",
+    "next": "Designs the planning template and cadence, improves the renewal process and takes the hardest renewals. Handles groups and chains, audits team data quality, fixes handoff failures at source, acts as escalation point for peers, writes and updates playbooks and coordinates multi-week initiatives."
+   },
+   {
+    "name": "Tactical communication",
+    "type": "Role-specific",
+    "now": "Uncovers goals, pains and seasonality, reads tone and signals and builds ROI with the hotelier's own numbers. Negotiates within guardrails, finds the real objection, runs the full save conversation choosing the right option and leads conversations with small groups. Runs group training sessions, builds plans for low-usage accounts and is fluent, handling nuance in the market language.",
+    "next": "Surfaces unstated needs, crafts value narratives by segment and coaches others from call reviews. Handles exceptions and sets negotiation guardrails, turns objections into playbook answers, takes the hardest saves and owns exit learning, and leads conversations with large groups, chains and partners. Builds training content, trains peers and coaches language quality."
+   },
+   {
+    "name": "Pipeline management",
+    "type": "Role-specific",
+    "now": "Triages own book by health and value, combines signals into an action, owns a risk plan per account and prioritises by € at stake. Builds the case from account data, qualifies budget, decision-maker and timing and closes, choosing the right play per account and understanding how own choices move NRR and margin. Reviews win/loss monthly and forecasts renewals and expansion MRR within ±15% (proposed).",
+    "next": "Tunes the health model and designs new signals with Data and AI, finds systemic churn causes and sets prioritisation rules, automating with AI. Designs offers with Product, closes complex multi-property deals, designs the segments and weighs cost to serve against value. Runs cross-team win/loss analysis for Product and Sales and forecasts across a team of books within ±10% (proposed)."
+   },
+   {
+    "name": "Data and AI fluency",
+    "type": "Role-specific",
+    "now": "Decides where to spend time from NRR, save rate and health data and builds own book reports. Supervises the AI-run portfolio, corrects the AI where needed, compares plays and keeps what works.",
+    "next": "Defines metrics and challenges decisions with data, and builds team dashboards. Designs AI workflows, proposes automations and runs tests against a baseline."
+   },
+   {
+    "name": "Team Enablement & Mentorship",
+    "type": "Seniority-gated",
+    "now": "Not yet applicable at this level.",
+    "next": "Mentors peers, acts as their escalation point and shapes the team's playbook."
+   },
+   {
+    "name": "Cross-functional Collaboration",
+    "type": "Seniority-gated",
+    "now": "Not yet applicable at this level.",
+    "next": "Brings structured customer insight to Product, Sales, Legal and Data, and turns it into team-wide improvements."
+   }
+  ]
+ },
+ "ic3": {
+  "label": "Sr Customer Success Manager",
+  "level": "IC3",
+  "track": "IC",
+  "nextId": "",
+  "nextLabel": "—",
+  "nextLevel": "—",
+  "journeyIds": [
+   "ic1",
+   "ic2",
+   "ic3",
+   "m3",
+   "m4",
+   "m5",
+   "vp"
+  ],
+  "summary": "Owns the most complex accounts (groups, chains, multi-property deals) and the hardest renewals and saves. Mentors peers, writes and improves the playbook and brings structured customer insight to Product, Sales, Legal and Data.",
+  "competencies": [
+   {
+    "name": "Customer Centricity",
+    "type": "Universal",
+    "now": "Acts as a trusted advisor to the most complex accounts and brings the customer's perspective into team decisions.",
+    "next": "—"
+   },
+   {
+    "name": "Operational Excellence",
+    "type": "Universal",
+    "now": "Raises the bar on team workflows and drives scalable process improvements.",
+    "next": "—"
+   },
+   {
+    "name": "Business Acumen",
+    "type": "Universal",
+    "now": "Connects book performance to company economics and contributes to Customer Success planning.",
+    "next": "—"
+   },
+   {
+    "name": "Industry knowledge",
+    "type": "Role-specific",
+    "now": "Spots changes across the four EU markets, briefs the team and Product, and sets regulatory guidance with Legal, owning the FAQ. Turns channel shifts and travel trends into team plays and account strategy, keeps battlecards current, shapes payments as a growth lever, builds the seasonal CS calendar and builds relationships with local associations, speaking at their events.",
+    "next": "—"
+   },
+   {
+    "name": "Product knowledge",
+    "type": "Role-specific",
+    "now": "Segments the book by jobs and builds reusable value stories. Is the team's product reference: fixes cross-module setup issues and coaches others, shapes discount guardrails, feeds demand to the roadmap with ARR at stake, maintains messaging from lost-account data and scopes custom requests, spotting partner opportunities.",
+    "next": "—"
+   },
+   {
+    "name": "Project management",
+    "type": "Role-specific",
+    "now": "Designs the planning template and cadence, improves the renewal process and takes the hardest renewals. Handles groups and chains, audits team data quality, fixes handoff failures at source, acts as escalation point for peers, writes and updates playbooks and coordinates multi-week initiatives.",
+    "next": "—"
+   },
+   {
+    "name": "Tactical communication",
+    "type": "Role-specific",
+    "now": "Surfaces unstated needs, crafts value narratives by segment and coaches others from call reviews. Handles exceptions and sets negotiation guardrails, turns objections into playbook answers, takes the hardest saves and owns exit learning, and leads conversations with large groups, chains and partners. Builds training content, trains peers and coaches language quality.",
+    "next": "—"
+   },
+   {
+    "name": "Pipeline management",
+    "type": "Role-specific",
+    "now": "Tunes the health model and designs new signals with Data and AI, finds systemic churn causes and sets prioritisation rules, automating with AI. Designs offers with Product, closes complex multi-property deals, designs the segments and weighs cost to serve against value. Runs cross-team win/loss analysis for Product and Sales and forecasts across a team of books within ±10% (proposed).",
+    "next": "—"
+   },
+   {
+    "name": "Data and AI fluency",
+    "type": "Role-specific",
+    "now": "Defines metrics and challenges decisions with data, and builds team dashboards. Designs AI workflows, proposes automations and runs tests against a baseline.",
+    "next": "—"
+   },
+   {
+    "name": "Team Enablement & Mentorship",
+    "type": "Seniority-gated",
+    "now": "Mentors peers, acts as their escalation point and shapes the team's playbook.",
+    "next": "—"
+   },
+   {
+    "name": "Cross-functional Collaboration",
+    "type": "Seniority-gated",
+    "now": "Brings structured customer insight to Product, Sales, Legal and Data, and turns it into team-wide improvements.",
+    "next": "—"
+   }
+  ]
+ },
+ "m3": {
+  "label": "Customer Success Team Lead",
+  "level": "M3",
+  "track": "Manager",
+  "nextId": "m4",
+  "nextLabel": "Customer Success Manager",
+  "nextLevel": "M4",
+  "journeyIds": [
+   "ic3",
+   "m3",
+   "m4",
+   "m5",
+   "vp"
+  ],
+  "summary": "Leads a team of about 6–8 CSMs. Owns team NRR, GRR and save rate, runs the weekly cadence and coaches CSMs through 1:1s and call reviews. Balances people management with leading key-account and escalation calls.",
+  "competencies": [
+   {
+    "name": "Customer Centricity",
+    "type": "Universal",
+    "now": "Keeps the team customer-first and models it in coaching and escalations.",
+    "next": "Builds a customer-first culture across teams; makes sure customer insight feeds strategy."
+   },
+   {
+    "name": "Operational Excellence",
+    "type": "Universal",
+    "now": "Keeps the team's ways of working disciplined and consistent.",
+    "next": "Defines and optimises workflows across teams and removes systemic bottlenecks."
+   },
+   {
+    "name": "Business Acumen",
+    "type": "Universal",
+    "now": "Understands how team performance drives company revenue and customer LTV.",
+    "next": "Connects function performance to company economics and commercial strategy."
+   },
+   {
+    "name": "Outcomes",
+    "type": "Role-specific",
+    "now": "Owns team NRR, GRR and save rate, sets realistic team targets and hits them. Explains misses with the root cause and what will change, knows which accounts stay, grow or leave and why, and weighs trade-offs by revenue and cost.",
+    "next": "Owns function-wide NRR strategy and targets by segment, with a credible path across teams. Finds the systemic causes behind misses, spots patterns across segments and markets and owns the upsell framework and pricing input."
+   },
+   {
+    "name": "Operations",
+    "type": "Role-specific",
+    "now": "Runs the weekly cadence and makes sure playbooks are followed. Cuts manual work with tools and AI, plans team coverage a quarter ahead, understands what drives the team's cost to serve and watches leading indicators to act early.",
+    "next": "Defines playbooks across teams and markets and scales automation across teams. Plans coverage and hiring across teams, manages cost to serve by segment and builds the early-warning system across teams."
+   },
+   {
+    "name": "People",
+    "type": "Role-specific",
+    "now": "Hires to a clear profile and makes sure new joiners hit the ramp plan. Runs weekly 1:1s and call reviews with honest feedback, scores CSMs from evidence and proposes promotions. Acts early and fairly on underperformance with clear expectations, keeps good people and builds a second line in the team.",
+    "next": "Owns the hiring plan, hires Team Leads and standardises onboarding across teams. Coaches Team Leads and sets the coaching framework, calibrates scores across teams and markets, backs Team Leads through hard calls and exits and keeps a succession plan for Team Lead roles."
+   },
+   {
+    "name": "Expertise",
+    "type": "Role-specific",
+    "now": "Is the team's authority on hospitality and on the platform, coaching CSMs on the product. Handles competitor questions in coaching and leads key-account and escalation calls.",
+    "next": "Is the authority across all four markets, sets the product-knowledge standard and keeps battlecards current with Product. Manages executive-level escalations."
+   },
+   {
+    "name": "Data and AI",
+    "type": "Role-specific",
+    "now": "Decides from HubSpot NRR and health data and reports team metrics weekly. Supervises the AI portfolio and team tools and runs plays against a baseline.",
+    "next": "Owns the analytics framework and builds dashboards and forecasts across teams. Scales AI workflows, measures their impact and runs structured tests across teams."
+   },
+   {
+    "name": "Adaptability",
+    "type": "Role-specific",
+    "now": "Picks up new tools and AI fast, makes progress without full information and carries the team through change. Delegates and limits own hands-on work; asks for feedback and acts on it.",
+    "next": "Brings new methods to the function, sets direction where the plan is unclear and leads change across teams. Spends nearly all time leading and seeks feedback from Team Leads."
+   },
+   {
+    "name": "Ownership",
+    "type": "Role-specific",
+    "now": "Gives an accurate team forecast with no end-of-period surprises and raises risks early, with options. Takes responsibility and closes the loop, decides and sticks to it, and makes sure the team knows what is going on and why.",
+    "next": "Forecasts accurately across teams, surfaces systemic risks and owns problems across teams. Decides on resourcing and priorities and cascades strategy through Team Leads."
+   },
+   {
+    "name": "Cross-functional Collaboration",
+    "type": "Seniority-gated",
+    "now": "Brings customer insight and bugs to Product, keeps Sales and Marketing handoffs clean with shared definitions and uses numbers credibly with Finance. Resolves issues directly, escalates sparingly and is someone peers trust and seek out for their view.",
+    "next": "Influences the roadmap with evidence, fixes handoffs at source across teams and builds business cases Finance accepts. Leads cross-functional initiatives and is a partner other managers rely on."
+   },
+   {
+    "name": "Team Building & Talent Development",
+    "type": "Seniority-gated",
+    "now": "Identifies and develops key talent, focusing on cultural fit and growth potential. Provides ongoing, constructive feedback with actionable improvement suggestions.",
+    "next": "Creates a coaching and development culture, empowering team members to reach their full potential and become future leaders. Invests time in growing the team's soft and hard skills, on top of identifying and developing key talent."
+   },
+   {
+    "name": "Team Clarity & Communication",
+    "type": "Seniority-gated",
+    "now": "Communicates context and goals effectively, translating them into clear, actionable plans for the team.",
+    "next": "Connects individual goals to the company strategy, ensuring teams understand the 'why' behind their work, on top of communicating goals as clear actionable plans."
+   },
+   {
+    "name": "Execution & Accountability",
+    "type": "Seniority-gated",
+    "now": "Provides resources and support to enable team success, giving feedback quickly and constructively. Holds themselves and others accountable for results and makes tough decisions when necessary.",
+    "next": "Proactively identifies and removes blockers, focusing on solutions and process improvement to prevent future issues, on top of holding the team accountable and making tough calls."
+   },
+   {
+    "name": "Leadership Role Modelling",
+    "type": "Seniority-gated",
+    "now": "Consistently embodies the company values and demonstrates the desired behaviours they expect from the team.",
+    "next": "Fosters a safe space for communication, showing vulnerability, approachability and active listening. Participates and contributes actively to the manager community, on top of embodying company values."
+   }
+  ]
+ },
+ "m4": {
+  "label": "Customer Success Manager",
+  "level": "M4",
+  "track": "Manager",
+  "nextId": "m5",
+  "nextLabel": "Head of Customer Success",
+  "nextLevel": "M5",
+  "journeyIds": [
+   "m3",
+   "m4",
+   "m5",
+   "vp"
+  ],
+  "summary": "Leads Team Leads across teams or markets. Owns function-wide targets and playbooks, the hiring plan and the coaching framework, and leads cross-functional initiatives with Product, Sales and Finance.",
+  "competencies": [
+   {
+    "name": "Customer Centricity",
+    "type": "Universal",
+    "now": "Builds a customer-first culture across teams; makes sure customer insight feeds strategy.",
+    "next": "Ensures customer insight drives Customer Success strategy and product decisions."
+   },
+   {
+    "name": "Operational Excellence",
+    "type": "Universal",
+    "now": "Defines and optimises workflows across teams and removes systemic bottlenecks.",
+    "next": "Sets the operational standards for the whole function."
+   },
+   {
+    "name": "Business Acumen",
+    "type": "Universal",
+    "now": "Connects function performance to company economics and commercial strategy.",
+    "next": "Shapes the commercial direction of Customer Success in line with company strategy."
+   },
+   {
+    "name": "Outcomes",
+    "type": "Role-specific",
+    "now": "Owns function-wide NRR strategy and targets by segment, with a credible path across teams. Finds the systemic causes behind misses, spots patterns across segments and markets and owns the upsell framework and pricing input.",
+    "next": "Owns the NRR and GRR plan with the exec team and sets annual and multi-year targets with Finance. Explains misses to the exec team with options and a fix, turns customer insight into strategy and roadmap asks and owns the outcome of the commercial model."
+   },
+   {
+    "name": "Operations",
+    "type": "Role-specific",
+    "now": "Defines playbooks across teams and markets and scales automation across teams. Plans coverage and hiring across teams, manages cost to serve by segment and builds the early-warning system across teams.",
+    "next": "Owns the operating model and sets the AI and tooling strategy. Owns the headcount case and budget and the unit economics of the function, and sets quality standards and KPIs."
+   },
+   {
+    "name": "People",
+    "type": "Role-specific",
+    "now": "Owns the hiring plan, hires Team Leads and standardises onboarding across teams. Coaches Team Leads and sets the coaching framework, calibrates scores across teams and markets, backs Team Leads through hard calls and exits and keeps a succession plan for Team Lead roles.",
+    "next": "Builds the leadership bench and hiring strategy and owns ramp targets and the enablement model. Builds a coaching culture across the function, owns levelling, promotion and performance standards and the final calls, retains leaders and owns succession."
+   },
+   {
+    "name": "Expertise",
+    "type": "Role-specific",
+    "now": "Is the authority across all four markets, sets the product-knowledge standard and keeps battlecards current with Product. Manages executive-level escalations.",
+    "next": "Anticipates market and regulatory change and shapes product priorities with Product leadership. Sets positioning with Sales and Marketing and is a trusted advisor to the largest customers and partners."
+   },
+   {
+    "name": "Data and AI",
+    "type": "Role-specific",
+    "now": "Owns the analytics framework and builds dashboards and forecasts across teams. Scales AI workflows, measures their impact and runs structured tests across teams.",
+    "next": "Shapes the data culture and metric definitions and reports strategy and forecast to the exec team. Sets AI strategy and guardrails and the experiment priorities."
+   },
+   {
+    "name": "Adaptability",
+    "type": "Role-specific",
+    "now": "Brings new methods to the function, sets direction where the plan is unclear and leads change across teams. Spends nearly all time leading and seeks feedback from Team Leads.",
+    "next": "Decides what to adopt and what to drop, builds the plan from white space and designs and sponsors reorganisations. Works through leaders, not the queue, and seeks challenge from exec peers."
+   },
+   {
+    "name": "Ownership",
+    "type": "Role-specific",
+    "now": "Forecasts accurately across teams, surfaces systemic risks and owns problems across teams. Decides on resourcing and priorities and cascades strategy through Team Leads.",
+    "next": "Delivers a forecast Finance and the exec team rely on and flags company-level risks early. Owns outcomes for the whole function, decides on strategy and trade-offs and communicates direction up, across and down."
+   },
+   {
+    "name": "Cross-functional Collaboration",
+    "type": "Seniority-gated",
+    "now": "Influences the roadmap with evidence, fixes handoffs at source across teams and builds business cases Finance accepts. Leads cross-functional initiatives and is a partner other managers rely on.",
+    "next": "Co-owns roadmap priorities for customer outcomes, sets handoff standards across the customer journey and prepares budget and forecast for VP sign-off. Influences exec decisions on company-level issues and speaks for CS at executive level."
+   },
+   {
+    "name": "Team Building & Talent Development",
+    "type": "Seniority-gated",
+    "now": "Creates a coaching and development culture, empowering team members to reach their full potential and become future leaders. Invests time in growing the team's soft and hard skills, on top of identifying and developing key talent.",
+    "next": "Builds strong talent pipelines by anticipating future needs and identifying potential talent, internally and externally. Champions coaching and development for the entire team, ensuring everyone has opportunities to grow, on top of building a coaching and development culture."
+   },
+   {
+    "name": "Team Clarity & Communication",
+    "type": "Seniority-gated",
+    "now": "Connects individual goals to the company strategy, ensuring teams understand the 'why' behind their work, on top of communicating goals as clear actionable plans.",
+    "next": "Provides regular updates on progress and goals, keeping the team informed and engaged in driving impact, on top of connecting individual goals to the company strategy."
+   },
+   {
+    "name": "Execution & Accountability",
+    "type": "Seniority-gated",
+    "now": "Proactively identifies and removes blockers, focusing on solutions and process improvement to prevent future issues, on top of holding the team accountable and making tough calls.",
+    "next": "Encourages a culture of experimentation, learning from both successes and failures to continuously improve execution speed and effectiveness, on top of proactively removing blockers."
+   },
+   {
+    "name": "Leadership Role Modelling",
+    "type": "Seniority-gated",
+    "now": "Fosters a safe space for communication, showing vulnerability, approachability and active listening. Participates and contributes actively to the manager community, on top of embodying company values.",
+    "next": "Encourages questions and clarifications, fostering a culture of open dialogue, and mentors other managers in the manager community, on top of fostering a safe space for communication."
+   }
+  ]
+ },
+ "m5": {
+  "label": "Head of Customer Success",
+  "level": "M5",
+  "track": "Manager",
+  "nextId": "vp",
+  "nextLabel": "VP of Customer Success",
+  "nextLevel": "VP",
+  "journeyIds": [
+   "m4",
+   "m5",
+   "vp"
+  ],
+  "summary": "Owns the whole Customer Success function: the NRR and GRR plan with the exec team, headcount and budget, the operating model and AI strategy. Builds the leadership bench and speaks for CS at executive level.",
+  "competencies": [
+   {
+    "name": "Customer Centricity",
+    "type": "Universal",
+    "now": "Ensures customer insight drives Customer Success strategy and product decisions.",
+    "next": "Champions a customer-first culture across the entire organisation. Ensures customer insights from Onboarding, Care and Customer Success drive product, commercial and company-level decisions."
+   },
+   {
+    "name": "Operational Excellence",
+    "type": "Universal",
+    "now": "Sets the operational standards for the whole function.",
+    "next": "Establishes frameworks for continuous improvement across all post-sales operations (Onboarding, Care and Customer Success) and drives performance at organisational level."
+   },
+   {
+    "name": "Business Acumen",
+    "type": "Universal",
+    "now": "Shapes the commercial direction of Customer Success in line with company strategy.",
+    "next": "Oversees long-term business models for the post-sales organisation. Drives CAC efficiency and LTV growth and aligns post-sales operations with company strategy."
+   },
+   {
+    "name": "Outcomes",
+    "type": "Role-specific",
+    "now": "Owns the NRR and GRR plan with the exec team and sets annual and multi-year targets with Finance. Explains misses to the exec team with options and a fix, turns customer insight into strategy and roadmap asks and owns the outcome of the commercial model.",
+    "next": "Defines the company's revenue retention vision. Ensures NRR and GRR are core metrics in strategic and financial planning at executive and board level."
+   },
+   {
+    "name": "Operations",
+    "type": "Role-specific",
+    "now": "Owns the operating model and sets the AI and tooling strategy. Owns the headcount case and budget and the unit economics of the function, and sets quality standards and KPIs.",
+    "next": "Owns headcount, budget and tooling strategy across Onboarding, Care and Customer Success, ensuring scalability and efficiency as the company grows."
+   },
+   {
+    "name": "People",
+    "type": "Role-specific",
+    "now": "Builds the leadership bench and hiring strategy and owns ramp targets and the enablement model. Builds a coaching culture across the function, owns levelling, promotion and performance standards and the final calls, retains leaders and owns succession.",
+    "next": "Builds strong talent pipelines and the leadership bench across the whole post-sales organisation. Champions coaching and development for all post-sales leaders and owns performance standards."
+   },
+   {
+    "name": "Expertise",
+    "type": "Role-specific",
+    "now": "Anticipates market and regulatory change and shapes product priorities with Product leadership. Sets positioning with Sales and Marketing and is a trusted advisor to the largest customers and partners.",
+    "next": "Represents the customer at executive and board level. Shapes product and go-to-market priorities from the full customer journey, from onboarding to renewal."
+   },
+   {
+    "name": "Data and AI",
+    "type": "Role-specific",
+    "now": "Shapes the data culture and metric definitions and reports strategy and forecast to the exec team. Sets AI strategy and guardrails and the experiment priorities.",
+    "next": "Promotes data-driven decision-making across the entire post-sales organisation and integrates post-sales analytics and AI strategy into company-level planning."
+   },
+   {
+    "name": "Adaptability",
+    "type": "Role-specific",
+    "now": "Decides what to adopt and what to drop, builds the plan from white space and designs and sponsors reorganisations. Works through leaders, not the queue, and seeks challenge from exec peers.",
+    "next": "Leads organisational change across the post-sales organisation and decides which new methods and tools the company adopts."
+   },
+   {
+    "name": "Ownership",
+    "type": "Role-specific",
+    "now": "Delivers a forecast Finance and the exec team rely on and flags company-level risks early. Owns outcomes for the whole function, decides on strategy and trade-offs and communicates direction up, across and down.",
+    "next": "Provides strategic guidance to remove roadblocks for teams beyond their own, demonstrating a broader understanding of the organisation's needs and removing systemic blockers across the function. Drives cross-team collaboration by building strong relationships with other leaders and fostering communication across departments, building on linking individual goals to company strategy."
+   },
+   {
+    "name": "Cross-functional Collaboration",
+    "type": "Seniority-gated",
+    "now": "Co-owns roadmap priorities for customer outcomes, sets handoff standards across the customer journey and prepares budget and forecast for VP sign-off. Influences exec decisions on company-level issues and speaks for CS at executive level.",
+    "next": "Shapes decisions across the organisation through trust, vision and influence. Ensures systemic alignment between post-sales, Product, Sales and Finance."
+   },
+   {
+    "name": "Team Building & Talent Development",
+    "type": "Seniority-gated",
+    "now": "Builds strong talent pipelines by anticipating future needs and identifying potential talent, internally and externally. Champions coaching and development for the entire team, ensuring everyone has opportunities to grow, on top of building a coaching and development culture.",
+    "next": "Leads organisational initiatives to develop talent, fostering a culture of continuous growth and leadership development across the function, building on coaching culture and talent identification at lower levels."
+   },
+   {
+    "name": "Team Clarity & Communication",
+    "type": "Seniority-gated",
+    "now": "Provides regular updates on progress and goals, keeping the team informed and engaged in driving impact, on top of connecting individual goals to the company strategy.",
+    "next": "Drives cross-team collaboration by building strong relationships with other leaders and fostering communication across departments, building on linking individual goals to company strategy."
+   },
+   {
+    "name": "Execution & Accountability",
+    "type": "Seniority-gated",
+    "now": "Encourages a culture of experimentation, learning from both successes and failures to continuously improve execution speed and effectiveness, on top of proactively removing blockers.",
+    "next": "Provides strategic guidance to remove roadblocks for teams beyond their own, demonstrating a broader understanding of the organisation's needs and removing systemic blockers across the function."
+   },
+   {
+    "name": "Leadership Role Modelling",
+    "type": "Seniority-gated",
+    "now": "Encourages questions and clarifications, fostering a culture of open dialogue, and mentors other managers in the manager community, on top of fostering a safe space for communication.",
+    "next": "Leads by example in demonstrating respect and interpersonal intelligence, promoting a collaborative environment across the manager community and beyond."
+   }
+  ]
+ },
+ "vp": {
+  "label": "VP of Customer Success",
+  "level": "VP",
+  "track": "Manager",
+  "nextId": "",
+  "nextLabel": "—",
+  "nextLevel": "—",
+  "journeyIds": [
+   "m5",
+   "vp"
+  ],
+  "summary": "Owns the full post-sales organisation (Onboarding, Care and Customer Success), ensuring customers adopt, grow and stay with the product. Defines segmentation models, KPIs and the post-sales strategy to achieve strong NRR across all markets.",
+  "competencies": [
+   {
+    "name": "Customer Centricity",
+    "type": "Universal",
+    "now": "Champions a customer-first culture across the entire organisation. Ensures customer insights from Onboarding, Care and Customer Success drive product, commercial and company-level decisions.",
+    "next": "—"
+   },
+   {
+    "name": "Operational Excellence",
+    "type": "Universal",
+    "now": "Establishes frameworks for continuous improvement across all post-sales operations (Onboarding, Care and Customer Success) and drives performance at organisational level.",
+    "next": "—"
+   },
+   {
+    "name": "Business Acumen",
+    "type": "Universal",
+    "now": "Oversees long-term business models for the post-sales organisation. Drives CAC efficiency and LTV growth and aligns post-sales operations with company strategy.",
+    "next": "—"
+   },
+   {
+    "name": "Outcomes",
+    "type": "Role-specific",
+    "now": "Defines the company's revenue retention vision. Ensures NRR and GRR are core metrics in strategic and financial planning at executive and board level.",
+    "next": "—"
+   },
+   {
+    "name": "Operations",
+    "type": "Role-specific",
+    "now": "Owns headcount, budget and tooling strategy across Onboarding, Care and Customer Success, ensuring scalability and efficiency as the company grows.",
+    "next": "—"
+   },
+   {
+    "name": "People",
+    "type": "Role-specific",
+    "now": "Builds strong talent pipelines and the leadership bench across the whole post-sales organisation. Champions coaching and development for all post-sales leaders and owns performance standards.",
+    "next": "—"
+   },
+   {
+    "name": "Expertise",
+    "type": "Role-specific",
+    "now": "Represents the customer at executive and board level. Shapes product and go-to-market priorities from the full customer journey, from onboarding to renewal.",
+    "next": "—"
+   },
+   {
+    "name": "Data and AI",
+    "type": "Role-specific",
+    "now": "Promotes data-driven decision-making across the entire post-sales organisation and integrates post-sales analytics and AI strategy into company-level planning.",
+    "next": "—"
+   },
+   {
+    "name": "Adaptability",
+    "type": "Role-specific",
+    "now": "Leads organisational change across the post-sales organisation and decides which new methods and tools the company adopts.",
+    "next": "—"
+   },
+   {
+    "name": "Ownership",
+    "type": "Role-specific",
+    "now": "Provides strategic guidance to remove roadblocks for teams beyond their own, demonstrating a broader understanding of the organisation's needs and removing systemic blockers across the function. Drives cross-team collaboration by building strong relationships with other leaders and fostering communication across departments, building on linking individual goals to company strategy.",
+    "next": "—"
+   },
+   {
+    "name": "Cross-functional Collaboration",
+    "type": "Seniority-gated",
+    "now": "Shapes decisions across the organisation through trust, vision and influence. Ensures systemic alignment between post-sales, Product, Sales and Finance.",
+    "next": "—"
+   },
+   {
+    "name": "Team Building & Talent Development",
+    "type": "Seniority-gated",
+    "now": "Leads organisational initiatives to develop talent, fostering a culture of continuous growth and leadership development across the function, building on coaching culture and talent identification at lower levels.",
+    "next": "—"
+   },
+   {
+    "name": "Team Clarity & Communication",
+    "type": "Seniority-gated",
+    "now": "Drives cross-team collaboration by building strong relationships with other leaders and fostering communication across departments, building on linking individual goals to company strategy.",
+    "next": "—"
+   },
+   {
+    "name": "Execution & Accountability",
+    "type": "Seniority-gated",
+    "now": "Provides strategic guidance to remove roadblocks for teams beyond their own, demonstrating a broader understanding of the organisation's needs and removing systemic blockers across the function.",
+    "next": "—"
+   },
+   {
+    "name": "Leadership Role Modelling",
+    "type": "Seniority-gated",
+    "now": "Leads by example in demonstrating respect and interpersonal intelligence, promoting a collaborative environment across the manager community and beyond.",
+    "next": "—"
+   }
+  ]
+ }
+};
+
+const icTracks=[{"id": "cs", "label": "Customer Success"}];
+const icLevels=["IC3", "IC2", "IC1"];
+const icGrid={"ic3": {"level": "IC3", "track": "cs"}, "ic2": {"level": "IC2", "track": "cs"}, "ic1": {"level": "IC1", "track": "cs"}};
+const mgLevels=["VP","M5","M4","M3"];
+const mgLadder={"vp":{"level":"VP"},"m5":{"level":"M5"},"m4":{"level":"M4"},"m3":{"level":"M3"}};
+
+// Core competencies bullet sets - shared across levels
+const _coreIC2=[{l:"Ownership, Initiative & Commitment",b:["Takes responsibility for tasks under supervision, ensuring success.","Delivers work that is aligned with high standards and deadlines.","Shows initiative in improving processes and owning outcomes — always asking 'how can I have more impact?'"]},{l:"Speed of execution, Adaptability & Problem Solving",b:["Completes tasks promptly with guidance.","Adapts to immediate changes in priorities.","Identifies and understands problems within their scope, breaks down simple problems into manageable tasks, and implements solutions under supervision."]},{l:"Ambition, Continuous Learning & Impact Driven",b:["Delivers work aligned with team objectives, focusing on measurable results.","Seeks personal performance improvement and asks for resources to grow — from mentors, colleagues and manager.","Shows commitment to continuous learning and growth; seeks feedback to improve."]},{l:"Team Work, Collaboration, Interpersonal Intelligence & Respect",b:["Supports team success with constructive contributions.","Respects others' input and communicates respectfully and openly.","Maintains a positive attitude to foster a healthy culture and builds trust within the team."]}];
+const _coreIC3plus=[{l:"Ownership, Initiative & Commitment",b:["Takes responsibility for tasks under supervision, ensuring success.","Delivers work that is aligned with high standards and deadlines.","Shows initiative in improving processes and owning outcomes — always asking 'how can I have more impact?'","Delivers high-standard work on time, showing initiative in improving processes.","Ensures alignment with growth and success standards.","Stays on top of responsibilities and demonstrates accountability for impactful results without supervision."]},{l:"Speed of execution, Adaptability & Problem Solving",b:["Completes tasks promptly with guidance.","Adapts to immediate changes in priorities.","Identifies and understands problems within their scope, breaks down simple problems into manageable tasks, and implements solutions under supervision.","Delivers quick quality work under changing conditions with limited guidance or supervision.","Manages multiple priorities efficiently.","Adapts quickly to market or organisational changes, demonstrating resilience in a fast-paced environment.","Encourages innovative solutions to meet evolving business needs and balances short-term fixes with long-term considerations."]},{l:"Ambition, Continuous Learning & Impact Driven",b:["Delivers work aligned with team objectives, focusing on measurable results.","Seeks personal performance improvement and asks for resources to grow — from mentors, colleagues and manager.","Shows commitment to continuous learning and growth; seeks feedback to improve.","Identifies and delivers impactful work, ensuring their work creates value for the team and impacts project success.","Exceeds goals by proactively identifying opportunities.","Seeks growth opportunities aligned with company goals."]},{l:"Team Work, Collaboration, Interpersonal Intelligence & Respect",b:["Supports team success with constructive contributions.","Respects others' input and communicates respectfully and openly.","Maintains a positive attitude to foster a healthy culture and builds trust within the team.","Builds strong relationships within the team with stakeholders and collaborators, encouraging collaboration and inclusivity.","Resolves conflicts constructively, fostering stronger team cohesion and trust.","Supports team members in achieving shared goals."]}];
+const _coreM5=[{l:"Ownership, Initiative & Commitment",b:["Takes responsibility for tasks under supervision, ensuring success.","Delivers work that is aligned with high standards and deadlines.","Shows initiative in improving processes and owning outcomes — always asking 'how can I have more impact?'","Delivers high-standard work on time, showing initiative in improving processes.","Ensures alignment with growth and success standards.","Stays on top of responsibilities and demonstrates accountability for impactful results without supervision.","Leads initiatives aligning with company goals and inspires others to take ownership.","Consistently exceeds expectations through proactive effort.","Inspires others to take ownership and responsibility for success."]},{l:"Speed of execution, Adaptability & Problem Solving",b:["Completes tasks promptly with guidance.","Adapts to immediate changes in priorities.","Identifies and understands problems within their scope, breaks down simple problems into manageable tasks, and implements solutions under supervision.","Delivers quick quality work under changing conditions with limited guidance or supervision.","Manages multiple priorities efficiently.","Adapts quickly to market or organisational changes, demonstrating resilience in a fast-paced environment.","Encourages innovative solutions to meet evolving business needs and balances short-term fixes with long-term considerations.","Anticipates obstacles and adjusts strategies.","Consistently executes critical projects on tight timelines.","Improves team adaptability, resilience and scalability in dynamic environments.","Diagnoses and resolves complex problems, ensuring alignment with organisational goals."]},{l:"Ambition, Continuous Learning & Impact Driven",b:["Delivers work aligned with team objectives, focusing on measurable results.","Seeks personal performance improvement and asks for resources to grow — from mentors, colleagues and manager.","Shows commitment to continuous learning and growth; seeks feedback to improve.","Identifies and delivers impactful work, ensuring their work creates value for the team and impacts project success.","Exceeds goals by proactively identifying opportunities.","Seeks growth opportunities aligned with company goals.","Shapes high-impact initiatives and aligns efforts with priorities.","Aligns team efforts with strategic priorities, ensuring teams understand the company strategy.","Encourages the team to set ambitious goals and exceed them."]},{l:"Team Work, Collaboration, Interpersonal Intelligence & Respect",b:["Supports team success with constructive contributions.","Respects others' input and communicates respectfully and openly.","Maintains a positive attitude to foster a healthy culture and builds trust within the team.","Builds strong relationships within the team with stakeholders and collaborators, encouraging collaboration and inclusivity.","Resolves conflicts constructively, fostering stronger team cohesion and trust.","Supports team members in achieving shared goals.","Drives alignment across teams for shared success.","Builds cross-functional relationships to drive alignment and shared goals.","Facilitates open dialogue to resolve interpersonal challenges.","Demonstrates transparency and honesty to build trust and alignment."]}];
+const _coreVP=[{l:"Ownership, Initiative & Commitment",b:["Takes responsibility for tasks under supervision, ensuring success.","Delivers work that is aligned with high standards and deadlines.","Shows initiative in improving processes and owning outcomes — always asking 'how can I have more impact?'","Delivers high-standard work on time, showing initiative in improving processes.","Ensures alignment with growth and success standards.","Stays on top of responsibilities and demonstrates accountability for impactful results without supervision.","Leads initiatives aligning with company goals and inspires others to take ownership.","Consistently exceeds expectations through proactive effort.","Inspires others to take ownership and responsibility for success.","Models full commitment and ownership across teams.","Defines and drives strategies aligned with company vision.","Ensures impactful decision-making.","Fosters a culture of ownership and accountability across the organisation."]},{l:"Speed of execution, Adaptability & Problem Solving",b:["Completes tasks promptly with guidance.","Adapts to immediate changes in priorities.","Identifies and understands problems within their scope, breaks down simple problems into manageable tasks, and implements solutions under supervision.","Delivers quick quality work under changing conditions with limited guidance or supervision.","Manages multiple priorities efficiently.","Adapts quickly to market or organisational changes, demonstrating resilience in a fast-paced environment.","Encourages innovative solutions to meet evolving business needs and balances short-term fixes with long-term considerations.","Anticipates obstacles and adjusts strategies.","Consistently executes critical projects on tight timelines.","Improves team adaptability, resilience and scalability in dynamic environments.","Diagnoses and resolves complex problems, ensuring alignment with organisational goals.","Promotes agility across the organisation.","Removes blockers to enable speed and adaptability; aligns resources with strategic priorities.","Ensures the organisation remains competitive and responsive.","Establishes frameworks for proactive problem-solving across teams."]},{l:"Ambition, Continuous Learning & Impact Driven",b:["Delivers work aligned with team objectives, focusing on measurable results.","Seeks personal performance improvement and asks for resources to grow — from mentors, colleagues and manager.","Shows commitment to continuous learning and growth; seeks feedback to improve.","Identifies and delivers impactful work, ensuring their work creates value for the team and impacts project success.","Exceeds goals by proactively identifying opportunities.","Seeks growth opportunities aligned with company goals.","Shapes high-impact initiatives and aligns efforts with priorities.","Aligns team efforts with strategic priorities, ensuring teams understand the company strategy.","Encourages the team to set ambitious goals and exceed them.","Defines and measures impact metrics.","Fosters a culture of continuous learning and ambition; institutionalises continuous learning.","Aligns organisational efforts for long-term growth."]},{l:"Team Work, Collaboration, Interpersonal Intelligence & Respect",b:["Supports team success with constructive contributions.","Respects others' input and communicates respectfully and openly.","Maintains a positive attitude to foster a healthy culture and builds trust within the team.","Builds strong relationships within the team with stakeholders and collaborators, encouraging collaboration and inclusivity.","Resolves conflicts constructively, fostering stronger team cohesion and trust.","Supports team members in achieving shared goals.","Drives alignment across teams for shared success.","Builds cross-functional relationships to drive alignment and shared goals.","Facilitates open dialogue to resolve interpersonal challenges.","Demonstrates transparency and honesty to build trust and alignment.","Fosters and models a culture of collaboration and mutual respect.","Ensures cohesive operations.","Models transparency and honesty in team interactions.","Cultivates emotional intelligence across teams to navigate complex interpersonal challenges."]}];
+const _persona=[{l:"Capability",b:["Sets a clear vision and goals.","Communicates strategic priorities.","Delegates effectively.","Removes obstacles.","Holds people accountable."]},{l:"Compassion",b:["Identifies individual strengths.","Adapts approach to connect with others.","Encourages two-way communication.","Role-models vulnerability & empathy.","Gives and solicits feedback."]},{l:"Community",b:["Ensures alignment within the team.","Communicates openly and inclusively.","Ensures all people are heard.","Creates space for building connection.","Pursues collective growth."]}];
+
+function _toCore(arr) { return arr.map(c => ({label:c.l, bullets:c.b})); }
+function _delta(arr, prev) { return arr.map((c,i) => ({l:c.l, b:c.b.filter(x => !prev[i].b.includes(x))})); }
+
+const levelDefs = {
+  "IC1":{title:"IC1 — Specialist",track:"IC",mantra:"Given why, what, HOW: then DO.",dimensions:[{label:"Scope of Influence",text:"Task — Work within their own team and only have a direct impact on their own tasks."},{label:"Complexity & Problem Solving",text:"Learn and discover existing tools and processes to apply them, along with their academic knowledge, to achieve simple tasks."},{label:"Expertise",text:"Entry level — performs routine assignments using basic knowledge in their discipline."}],core:_toCore(_coreIC2),manager:null},
+  "IC2":{title:"IC2 — Specialist",track:"IC",mantra:"Given why, what: figure out HOW then DO.",dimensions:[{label:"Scope of Influence",text:"Team — Work within their own team and mainly have a direct impact on themselves and direct peers."},{label:"Complexity & Problem Solving",text:"Use existing tools and processes to solve tasks/issues assigned to them."},{label:"Expertise",text:"Has working knowledge and experience in their own discipline."}],core:_toCore(_coreIC2),manager:null},
+  "IC3":{title:"IC3 — Senior Specialist",track:"IC",mantra:"Given why: figure out WHAT, HOW then DO.",dimensions:[{label:"Scope of Influence",text:"Department — Work within their own function, occasionally interacts with other departments and has impact on their own function. Often in a mentoring (not managing) role for more junior people."},{label:"Complexity & Problem Solving",text:"Contributes to large projects and is a force of proposition on their own scope, working towards global improvements and achievements."},{label:"Expertise",text:"Has in-depth knowledge of own discipline; acts as a resource for colleagues with less experience. May represent the level at which a career stabilises for many years."}],core:_toCore(_delta(_coreIC3plus,_coreIC2)),manager:null},
+  "IC4":{title:"IC4 — Senior IC / Sub-discipline expert",track:"IC",mantra:"Given white space: figure out WHY, WHAT, HOW, then DO.",dimensions:[{label:"Scope of Influence",text:"Company — Works with peers from different functions and has impact across departments."},{label:"Complexity & Problem Solving",text:"Owns and solves complex tasks that are part of a large project, or leads small projects on their own."},{label:"Expertise",text:"Has in-depth knowledge in own discipline and advanced knowledge of related disciplines."}],core:_toCore(_delta(_coreIC3plus,_coreIC2)),manager:null},
+  "M3":{title:"M3 — Team Leader",track:"Manager",mantra:"Given why: figure out WHAT, HOW then DO.",dimensions:[{label:"Manager Scope",text:"Manages a small team of individual contributors, often junior. Has direct impact on team productivity and quality. Reports into the Manager (M4)."},{label:"Responsibility & Accountability",text:"Cascades strategy from their Manager. Coaches and develops direct reports. Owns daily team operations and balances people management with hands-on operational work."}],core:_toCore(_delta(_coreIC3plus,_coreIC2)),manager:_toCore(_persona)},
+  "M4":{title:"M4 — Manager",track:"Manager",mantra:"Given white space: figure out WHY, WHAT, HOW, then DO.",dimensions:[{label:"Manager Scope",text:"Manages individual contributors. Owns performance of a single team with mixed roles. May still own some operational responsibilities on a specific scope, but spends most of their time managing and coaching the team."},{label:"Responsibility & Accountability",text:"Cascades strategy and operational directions from their manager to the team. Leads people development and hiring plans. Role-models company culture, values and principles."}],core:_toCore(_delta(_coreIC3plus,_coreIC2)),manager:_toCore(_persona)},
+  "M5":{title:"M5 — Head of",track:"Manager",mantra:"With increasing scope (usually a complex project/product or part of a department), given white space: figure out WHY, WHAT, HOW, then DO.",dimensions:[{label:"Manager Scope",text:"Owns performance of, and is accountable for, the results of a team — or more often, multiple teams representing a wider activity or business unit. Not a single decision-maker; often collaborates with peers."},{label:"Responsibility & Accountability",text:"Sets the team roadmap driven by company strategy. Proposes budget and workforce planning. Role-models company culture and mentors managers in the manager community."}],core:_toCore(_delta(_coreM5,_coreIC3plus)),manager:_toCore(_persona)},
+  "VP":{title:"VP — Vice President",track:"Manager",mantra:"Make the company successful — both in terms of your department and company operations as a whole.",dimensions:[{label:"Manager Scope",text:"Manages a whole department with several levels of management below them. Final decision-maker in their department; contributes to company-wide decisions alongside other leaders."},{label:"Responsibility & Accountability",text:"Responsible for the good execution of their team, and accountable for their results. Contributes to people development without being the main decision-maker."}],core:_toCore(_delta(_coreVP,_coreM5)),manager:_toCore(_persona)}
+};
+
+// ── BUILD PATHS ──
+function buildPaths() {
+  const c=document.getElementById('pathsContainer');
+  let html='';
+  // IC
+  html+='<div class="path-section path-section-ic"><div class="path-head"><div class="path-head-text"><div class="path-head-title">Individual Contributor</div><div class="path-head-sub">One Customer Success track. Grows IC1 → IC2 → IC3 with more autonomy, more complex accounts and more influence on the team.</div></div></div>';
+  html+=`<div class="ic-grid-wrap"><div class="ic-grid" style="--ic-cols:${icTracks.length}"><div></div>`;
+  icTracks.forEach(t => { html += `<div class="track-header">${t.label}</div>`; });
+  icLevels.forEach(lvl => {
+    html += `<div class="level-label ic-label" data-level="${lvl}" title="Click to see ${lvl} level definition">${lvl}</div>`;
+    icTracks.forEach(track => {
+      const role = Object.keys(icGrid).find(rid => icGrid[rid].level===lvl && icGrid[rid].track===track.id);
+      html += role ? `<div class="org-cell" data-id="${role}">${roles[role].label}</div>` : '<div class="org-empty"></div>';
+    });
+  });
+  html+='</div></div></div>';
+  // MG
+  html+='<div class="path-section path-section-mg"><div class="path-head"><div class="path-head-text"><div class="path-head-title">Managerial</div><div class="path-head-sub">Lead the Customer Success function: Team Lead (M3), Customer Success Manager (M4), Head of Customer Success (M5) and VP of Customer Success, who also leads Onboarding and Care.</div></div></div>';
+  html+='<div class="mg-ladder">';
+  mgLevels.forEach(lvl => {
+    html += `<div class="level-label mg-label" data-level="${lvl}" title="Click to see ${lvl} level definition">${lvl}</div>`;
+    const rids = Object.keys(mgLadder).filter(rid => mgLadder[rid].level===lvl);
+    if (rids.length === 0) {
+      html += '<div class="org-empty"></div>';
+    } else if (rids.length === 1) {
+      html += `<div class="org-cell org-cell-mg" data-id="${rids[0]}">${roles[rids[0]].label}</div>`;
+    } else {
+      // Multiple roles at same level (e.g. M3 in CS: csTL + ret) — render side-by-side
+      html += '<div class="org-cell-row">';
+      rids.forEach(rid => {
+        html += `<div class="org-cell org-cell-mg" data-id="${rid}">${roles[rid].label}</div>`;
+      });
+      html += '</div>';
+    }
+  });
+  html+='</div></div>';
+  c.innerHTML=html;
+  c.querySelectorAll('.org-cell').forEach(cell => cell.addEventListener('click', () => render(cell.dataset.id)));
+  c.querySelectorAll('.level-label').forEach(lbl => lbl.addEventListener('click', () => onLevelLabelClick(lbl.dataset.level)));
+}
+
+// ── PANEL TOGGLE ──
+function setPanelOpen(panelId, open) { document.getElementById(panelId).classList.toggle('is-open', open); }
+
+// Toggle on header click — script is at end of body so DOM is ready
+document.querySelectorAll('.panel-header').forEach(h => {
+  h.addEventListener('click', (e) => {
+    // Don't toggle if user clicks on a button/tab inside the header (none here, but safe)
+    h.closest('.panel').classList.toggle('is-open');
+  });
+});
+
+// ── LEVEL DEFINITION (Section 2 — collapsible) ──
+let _currentLevel = null;
+
+function renderLevelDefinition(lvl) {
+  const def = levelDefs[lvl];
+  if (!def) return;
+  const panel = document.getElementById('ldPanel');
+  panel.classList.toggle('is-mg', def.track==='Manager');
+  document.getElementById('ldTitle').innerHTML = `<span class="panel-title-strong">${def.title}</span> · ${def.track==='Manager'?'Manager track':'IC track'}`;
+  let html = `<div class="ld-mantra">"${def.mantra}"</div>`;
+  html += `<div class="ld-grid${def.dimensions.length===2?' cols-2':''}">`;
+  html += def.dimensions.map(d => `<div class="ld-dim"><div class="ld-dim-label">${d.label}</div><div class="ld-dim-text">${d.text}</div></div>`).join('');
+  html += '</div>';
+  document.getElementById('ldInner').innerHTML = html;
+  document.querySelectorAll('.level-label').forEach(l => l.classList.toggle('active-level', l.dataset.level===lvl));
+}
+
+// ── COMPETENCIES (Section 5 — collapsible with tabs) ──
+let _activeCmpTab = 'core';
+
+function renderCompetencies(lvl) {
+  const def = levelDefs[lvl];
+  if (!def) return;
+  const panel = document.getElementById('cmpPanel');
+  panel.classList.toggle('is-mg', def.track==='Manager');
+  document.getElementById('cmpTitle').innerHTML = `<span class="panel-title-strong">${def.title}</span> · ${def.track==='Manager'?'Manager track':'IC track'}`;
+
+  const tabsEl = document.getElementById('cmpTabs');
+  let tabsHtml = `<button class="cmp-tab" data-tab="core"><span class="cmp-tab-dot dot-core"></span>Core</button>`;
+  if (def.manager) tabsHtml += `<button class="cmp-tab" data-tab="persona"><span class="cmp-tab-dot dot-persona"></span>Manager Persona</button>`;
+  tabsEl.innerHTML = tabsHtml;
+  tabsEl.querySelectorAll('.cmp-tab').forEach(t => t.addEventListener('click', () => switchCmpTab(t.dataset.tab)));
+
+  const contentsEl = document.getElementById('cmpContents');
+  let cHtml = `<div class="cmp-content" data-tab="core"><div class="cmp-grid-2">`;
+  cHtml += def.core.map(c => `<div class="cmp-card"><div class="cmp-card-label">${c.label}</div><ul class="cmp-bullets">${c.bullets.map(b => `<li>${b}</li>`).join('')}</ul></div>`).join('');
+  cHtml += '</div></div>';
+  if (def.manager) {
+    cHtml += `<div class="cmp-content" data-tab="persona"><div class="cmp-grid-3">`;
+    cHtml += def.manager.map(c => `<div class="cmp-card persona"><div class="cmp-card-label">${c.label}</div><ul class="cmp-bullets">${c.bullets.map(b => `<li>${b}</li>`).join('')}</ul></div>`).join('');
+    cHtml += '</div></div>';
+  }
+  contentsEl.innerHTML = cHtml;
+
+  if (_activeCmpTab==='persona' && !def.manager) _activeCmpTab='core';
+  switchCmpTab(_activeCmpTab);
+}
+
+function switchCmpTab(tab) {
+  _activeCmpTab = tab;
+  document.querySelectorAll('#cmpTabs .cmp-tab').forEach(t => t.classList.toggle('active', t.dataset.tab===tab));
+  document.querySelectorAll('#cmpContents .cmp-content').forEach(c => c.classList.toggle('active', c.dataset.tab===tab));
+}
+
+// ── HANDLE LEVEL LABEL CLICK ──
+// Clicking a level label = explore that level. Deselect any role to avoid confusing dual highlight.
+function onLevelLabelClick(lvl) {
+  _currentLevel = lvl;
+  document.querySelectorAll('.org-cell').forEach(c => c.classList.remove('active'));
+  renderLevelDefinition(lvl);
+  renderCompetencies(lvl);
+  setPanelOpen('ldPanel', true);
+  setPanelOpen('cmpPanel', true);
+  setTimeout(() => { document.getElementById('ldPanel').scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+}
+
+// ── ROLE COMPETENCIES (Section 6 — always visible) ──
+function badge(type) {
+  if (type==="Universal") return '<span class="badge b-u">universal</span>';
+  if (type==="Role-specific") return '<span class="badge b-r">role-specific</span>';
+  return '<span class="badge b-s">seniority-gated</span>';
+}
+
+function getIC2Peers(roleId) { return Object.entries(roles).filter(([id,r]) => r.track==='IC' && r.level==='IC2' && id!==roleId).map(([id,r]) => ({id,label:r.label})); }
+function getSameLevelPeers(roleId) { const role=roles[roleId]; if (role.track!=='IC') return []; return Object.entries(roles).filter(([id,r]) => r.track==='IC' && r.level===role.level && id!==roleId).map(([id,r]) => ({id,label:r.label})); }
+
+function renderLaterals(roleId) {
+  const lateralsEl=document.getElementById('lateralsRow');
+  const role=roles[roleId];
+  if (role.track==='Manager') { lateralsEl.innerHTML='<span class="laterals-empty">This role is unique at this level on the Managerial path.</span>'; lateralsEl.style.display='flex'; return; }
+  if (getSameLevelPeers(roleId).length===0) { lateralsEl.innerHTML='<span class="laterals-empty">This role is unique at this level on the IC path.</span>'; lateralsEl.style.display='flex'; return; }
+  if (role.level==='IC2') {
+    const peers=getSameLevelPeers(roleId);
+    lateralsEl.innerHTML=`<span class="laterals-label">Lateral moves at IC2:</span>` + peers.map(l => `<button class="lateral-pill" data-id="${l.id}">${l.label}</button>`).join('');
+  } else {
+    const ic2Peers=getIC2Peers(roleId);
+    let html=`<span class="laterals-note-label">⚠ Switching function at ${role.level}</span><span class="laterals-note">usually means restarting at IC2 in the new specialty — it's not a same-level switch. Entry roles in other functions:</span>`;
+    html += ic2Peers.map(l => `<button class="lateral-pill" data-id="${l.id}">${l.label}</button>`).join('');
+    lateralsEl.innerHTML=html;
+  }
+  lateralsEl.querySelectorAll('.lateral-pill').forEach(p => p.addEventListener('click', () => render(p.dataset.id)));
+  lateralsEl.style.display='flex';
+}
+
+function render(roleId) {
+  const role=roles[roleId];
+  // Highlight the role + the matching level (replaces previous level highlight)
+  document.querySelectorAll('.org-cell').forEach(b => b.classList.toggle('active', b.dataset.id===roleId));
+  document.querySelectorAll('.level-label').forEach(l => l.classList.toggle('active-level', l.dataset.level===role.level));
+
+  // Journey
+  const jEl=document.getElementById('journey');
+  jEl.innerHTML='';
+  const ids=role.journeyIds, ci=ids.indexOf(roleId);
+  ids.forEach((id,i) => {
+    const r=roles[id];
+    const cls = i<ci?'j-past' : i===ci?'j-current' : i===ci+1?'j-next' : 'j-future';
+    const lc = i===ci?'current' : i===ci+1?'next' : '';
+    const trackCls = r.track==='Manager' ? ' j-mg' : '';
+    const labelTrackCls = r.track==='Manager' ? ' j-mg-label' : '';
+    jEl.innerHTML += `<div class="jstep" data-id="${id}"><div class="jcircle ${cls}${trackCls}">${r.level}</div><div class="jlabel ${lc}${labelTrackCls}">${r.label}</div></div>`;
+    if (i<ids.length-1) {
+      const isOpt = roles[id].track==='IC' && roles[ids[i+1]].track==='Manager';
+      const arrowCls = (i===ci?'active':'') + (isOpt?' j-optional':'');
+      jEl.innerHTML += isOpt ? `<div class="jarrow-wrap"><div class="joptional-label">optional</div><div class="jarrow ${arrowCls}"></div></div>` : `<div class="jarrow ${arrowCls}"></div>`;
+    }
+  });
+  jEl.querySelectorAll('.jstep').forEach(step => step.addEventListener('click', () => render(step.dataset.id)));
+
+  renderLaterals(roleId);
+
+  // (role summary removed — role identity is communicated via the role grid highlight, the NOW column header in progression, and the mini career path in "Your next role")
+  const isMg = role.track==='Manager';
+
+  // Update level def + competencies content (but don't auto-toggle open state)
+  _currentLevel = role.level;
+  renderLevelDefinition(role.level);
+  renderCompetencies(role.level);
+
+  // Current level progression card
+  renderCurlevCard(role, roleId);
+
+  // Progression path — grouped role competencies
+  renderProgressionGroups(role, roleId);
+
+  // Next role section
+  renderNextRole(role);
+}
+
+// ── LEVEL TRANSITIONS (highlights for "Your next role") ──
+const levelTransitions = {
+  "IC1→IC2": {
+    progression: "Consistent delivery on the playbook, solid product and market knowledge and growing autonomy on the book typically unlock progression to",
+    highlights: [
+      "You shift from <strong>following guidance</strong> to <strong>figuring out the how</strong> yourself",
+      "Scope expands from <strong>priority accounts</strong> to <strong>your whole tiered book</strong>, including the AI-run portfolio",
+      "You move from <strong>presenting standard offers</strong> to <strong>building the case and closing</strong>",
+      "You move from <strong>scripted save calls</strong> to <strong>running the full save conversation</strong>"
+    ]
+  },
+  "IC2→IC3": {
+    progression: "Sustained impact on book NRR and save rate, deeper expertise and influence on peers typically unlock progression to",
+    highlights: [
+      "Scope expands from <strong>your own book</strong> to <strong>the most complex accounts</strong>: groups, chains, multi-property deals",
+      "You shift from <strong>following and flagging the playbook</strong> to <strong>writing and improving it</strong>",
+      "You become a <strong>reference and mentor</strong> for peers and their escalation point",
+      "You bring <strong>structured customer insight</strong> to Product, Sales, Legal and Data"
+    ]
+  },
+  "IC3→M3": {
+    progression: "Coaching aptitude, scope ownership and team-building skills typically unlock progression to",
+    highlights: [
+      "You shift from <strong>doing the work</strong> to <strong>building people</strong> who do it",
+      "Scope moves from your book to <strong>a team's NRR, GRR and save rate</strong>",
+      "You own <strong>coaching, feedback and hiring</strong> for your direct reports",
+      "You balance <strong>key-account and escalation calls</strong> with people management"
+    ]
+  },
+  "M3→M4": {
+    progression: "Team performance, sustained NRR results and broader scope typically unlock progression to",
+    highlights: [
+      "You shift from <strong>coaching CSMs</strong> to <strong>coaching Team Leads</strong>",
+      "Scope moves from <strong>one team</strong> to <strong>several teams or markets</strong>",
+      "You own <strong>function-wide targets, playbooks and the hiring plan</strong>",
+      "You <strong>lead cross-functional initiatives</strong> with Product, Sales and Finance"
+    ]
+  },
+  "M4→M5": {
+    progression: "Function-wide results, strategic ownership and executive credibility typically unlock progression to",
+    highlights: [
+      "You move from <strong>managing teams</strong> to <strong>owning the whole Customer Success function</strong>",
+      "You own <strong>headcount, budget and the operating model</strong>",
+      "You set the <strong>NRR and GRR plan</strong> with the exec team and Finance",
+      "You <strong>speak for CS at executive level</strong> and set AI and tooling strategy"
+    ]
+  },
+  "M5→VP": {
+    progression: "Sustained function results, executive influence and the ability to lead several post-sales functions typically unlock progression to",
+    highlights: [
+      "Scope expands from <strong>Customer Success</strong> to <strong>the whole post-sales organisation</strong>: Onboarding, Care and Customer Success",
+      "You move from <strong>leading one function</strong> to <strong>leading Heads of function</strong>",
+      "You make <strong>NRR and GRR</strong> core metrics at executive and board level",
+      "You shape <strong>company strategy through the customer lens</strong>, across the full customer journey"
+    ]
+  }
+};
+
+function getTransitionKey(role) {
+  if (!role.nextId) return null;
+  return `${role.level}→${role.nextLevel}`;
+}
+
+function renderCurlevCard(role, roleId) {
+  const isMg = role.track==='Manager';
+  const card = document.getElementById('curlevCard');
+  card.classList.toggle('is-mg', isMg);
+  if (!role.nextId) {
+    // No fixed next role — frame all cases positively (opportunity, not finality)
+    const ids = role.journeyIds || [];
+    const ci = ids.indexOf(roleId);
+    const hasOptional = ci >= 0 && ci < ids.length - 1;
+    const hasFuturePlaceholder = role.nextLabel && role.nextLabel !== '—' && role.nextLabel !== '';
+    if (hasFuturePlaceholder && !hasOptional) {
+      // Future placeholder for a not-yet-defined role (e.g. ic3en pointing to a future Sr Enablement Specialist IC4)
+      card.innerHTML = `<span class="curlev-pill">Open horizon</span><div class="curlev-headline">The next level doesn't exist yet — there's space to build it.</div><div class="curlev-text">The role <strong>${role.nextLabel}</strong> (${role.nextLevel}) is still to be defined. You can <strong>shape what mastery at this level looks like</strong> — start by deepening scope and impact in your current role. See the competency descriptions below for the growth direction.</div>`;
+    } else if (hasOptional) {
+      const continuationRoles = ids.slice(ci+1).map(rid => roles[rid] ? `<strong>${roles[rid].label}</strong> (${roles[rid].level})` : '').filter(Boolean).join(' → ');
+      if (isMg) {
+        card.innerHTML = `<span class="curlev-pill">Open horizon</span><div class="curlev-headline">Growth at this level — your range is wide.</div><div class="curlev-text">There's no fixed step to take next from here: your growth is about <strong>deepening scope, broadening impact across pillars and shaping the function</strong>.${continuationRoles ? `<br><br>The path beyond — ${continuationRoles} — is one possible direction, not a default next step.` : ''}</div>`;
+      } else {
+        card.innerHTML = `<span class="curlev-pill">Open horizon</span><div class="curlev-headline">The next IC level for your discipline doesn't exist yet — it's yours to shape.</div><div class="curlev-text">There's space to grow your scope, deepen impact, and help <strong>define what comes next</strong> in this discipline.${continuationRoles ? `<br><br>The manager track (${continuationRoles}) is an <strong>alternative direction</strong> — not a default next step — if leading a team feels right.` : ''}</div>`;
+      }
+    } else if (isMg) {
+      // Terminal Manager role (e.g. Head of) — top of org-level scope
+      card.innerHTML = `<span class="curlev-pill">You lead the function</span><div class="curlev-headline">Growth here is about shaping what's next.</div><div class="curlev-text">At this level, you don't move "up" — you <strong>set direction, build culture, and define what's next</strong> for the function and the business. The next role isn't a step up but a different lens (cross-functional, executive or company-wide impact).</div>`;
+    } else {
+      // Terminal IC with no defined growth path (e.g. m3pp Partnership Lead)
+      card.innerHTML = `<span class="curlev-pill">Open horizon</span><div class="curlev-headline">Your role is unique — the path forward is yours to shape.</div><div class="curlev-text">There's no defined next level for this role yet. From here, you can <strong>expand scope, deepen partnerships and define what growth looks like</strong> for this discipline. The next role doesn't exist yet — there's space to build it.</div>`;
+    }
+    return;
+  }
+  const key = getTransitionKey(role);
+  const t = levelTransitions[key];
+  const headline = isMg ? "Leadership & scope-driven" : "Performance & scope-driven";
+  const txt = t ? t.progression : "Demonstrated impact, expanded scope and consistent delivery typically unlock progression to";
+  card.innerHTML = `<span class="curlev-pill">Progression</span><div class="curlev-headline">${headline}</div><div class="curlev-text">${txt} <strong>${role.nextLabel}</strong> (${role.nextLevel}).</div>`;
+}
+
+// ── PROGRESSION PATH — grouped by type ──
+function renderProgressionGroups(role, roleId) {
+  const groups = [
+    {key:"Universal", title:"Universal — the foundations", hint:"expected at every role across Amenitiz", cls:"is-u"},
+    {key:"Role-specific", title:"Role-specific — your craft", hint:"unique to this discipline and track", cls:"is-r"},
+    {key:"Seniority-gated", title:"Seniority-gated — leadership edge", hint:"unlock with broader scope and influence", cls:"is-s"}
+  ];
+  // Decide the NEXT column label — frame positively when no fixed next exists
+  let nextLabel;
+  if (role.nextId) {
+    nextLabel = `${role.nextLabel} — ${role.nextLevel} · next`;
+  } else {
+    const ids = role.journeyIds || [];
+    const ci = ids.indexOf(roleId);
+    const hasOptional = ci >= 0 && ci < ids.length - 1;
+    const hasFuturePlaceholder = role.nextLabel && role.nextLabel !== '—' && role.nextLabel !== '';
+    const hasGrowthData = (role.competencies || []).some(c => c.next && c.next !== '—' && !c.next.startsWith('—'));
+    if (hasFuturePlaceholder && !hasOptional) {
+      nextLabel = `${role.nextLabel} — ${role.nextLevel} · to be built`;
+    } else if (hasGrowthData) {
+      // Growth direction within this level — substantive content describing mastery
+      nextLabel = `Growth direction · within this level`;
+    } else {
+      // No growth data — same header, placeholder content
+      nextLabel = `Growth direction · within this level`;
+    }
+  }
+  let html = '';
+  groups.forEach(g => {
+    const items = role.competencies.filter(c => c.type===g.key);
+    if (items.length===0) return;
+    let nowRows='', nextRows='';
+    items.forEach(c => {
+      const isNA = c.now.startsWith('Not yet applicable');
+      const isNextNA = !c.next || c.next==='—';
+      nowRows += `<div class="comp-row"><div class="comp-name">${c.name}</div><div class="${isNA?'comp-na':'comp-desc'}">${c.now}</div></div>`;
+      nextRows += `<div class="comp-row"><div class="comp-name">${c.name}</div><div class="${isNextNA?'comp-na':'comp-desc'}">${isNextNA?'Growth direction — deepen scope and impact at this level.':c.next}</div></div>`;
+    });
+    html += `<div class="cmp-group ${g.cls}">
+      <div class="cmp-group-banner">
+        <span class="cmp-group-title">${g.title}</span>
+        <span class="cmp-group-hint">— ${g.hint}</span>
+        <span class="cmp-group-count">${items.length} competenc${items.length===1?'y':'ies'}</span>
+      </div>
+      <div class="cmp-group-body">
+        <div class="cmp-group-col is-now">
+          <div class="cmp-group-col-h">${role.label} — ${role.level} · NOW</div>
+          ${nowRows}
+        </div>
+        <div class="cmp-group-col is-next">
+          <div class="cmp-group-col-h">${nextLabel.toUpperCase()}</div>
+          ${nextRows}
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('progGroups').innerHTML = html;
+}
+
+// ── NEXT ROLE SECTION ──
+function renderNextRole(role) {
+  const block = document.getElementById('nextroleBlock');
+  if (!role.nextId) {
+    block.style.display='none';
+    return;
+  }
+  block.style.display='block';
+  const nextRole = roles[role.nextId];
+  const key = getTransitionKey(role);
+  const t = levelTransitions[key] || { highlights: [
+    "You take on <strong>broader scope</strong> at the next level",
+    "Your <strong>impact grows</strong> beyond your current team",
+    "You become a <strong>reference</strong> for others on your craft",
+    "You contribute to <strong>strategic decisions</strong> in your area"
+  ]};
+
+  // Mini career path: current + next
+  const pathEl = document.getElementById('nextrolePath');
+  const nextIsMg = nextRole.track==='Manager';
+  pathEl.classList.toggle('is-mg', nextIsMg);
+  pathEl.innerHTML = `
+    <div class="blob jb1"></div>
+    <div class="nextrole-path-label">your career path</div>
+    <div class="nextrole-path-flow">
+      <div class="nrp-step"><div class="nrp-circle current">${role.level}</div><div class="nrp-label">${role.label}</div></div>
+      <div class="nrp-arrow"></div>
+      <div class="nrp-step"><div class="nrp-circle next">${nextRole.level}</div><div class="nrp-label next">${nextRole.label}</div></div>
+    </div>`;
+
+  // Detail card
+  const detailEl = document.getElementById('nextroleDetail');
+  const highlightsHtml = t.highlights.map(h => `<div class="highlight-box">${h}</div>`).join('');
+
+  // Focus competencies: pick role-specific + seniority-gated competencies from current role's progression
+  // (the ones that grow most by the next level)
+  const focusComps = role.competencies
+    .filter(c => c.type !== 'Universal' && c.next && c.next!=='—' && !c.next.startsWith('—'))
+    .slice(0, 4)
+    .map(c => c.name);
+
+  const focusHtml = focusComps.length>0 ? `
+    <div class="focus-block">
+      <div class="focus-label">To get there, focus on developing</div>
+      <div class="focus-badges">${focusComps.map(f => `<span class="focus-badge">${f}</span>`).join('')}</div>
+    </div>` : '';
+
+  detailEl.innerHTML = `
+    <div class="nextrole-detail-deco"></div>
+    <div class="nextrole-detail-label"><span class="nextrole-detail-arrow">→</span> Next stop in your career</div>
+    <div class="nextrole-detail-title">${nextRole.label} <span class="nextrole-level-pill">${nextRole.level}</span></div>
+    <div class="nextrole-detail-desc">${nextRole.summary}</div>
+    <div class="highlights">${highlightsHtml}</div>
+    ${focusHtml}`;
+}
+
+buildPaths();
+render('ic2');
+// Both Level Definition and Competencies start CLOSED. User opens by clicking level labels or panel headers.
+
+</script>
+</body>
+</html>
